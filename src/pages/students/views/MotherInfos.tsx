@@ -129,10 +129,16 @@ const MotherInfos = (props: {
         }}
       >
         <FormControlLabel
-          value="start"
+          value={props.motherInfos.isParent}
           control={<Switch color="primary" />}
           label="Öğrencinin Velisi mi?"
           labelPlacement="start"
+          onClick={() => {
+            props.setMotherInfos({
+              ...props.motherInfos,
+              isParent: !props.motherInfos.isParent,
+            });
+          }}
         />
         <Button
           variant="contained"

@@ -127,10 +127,17 @@ const FatherInfos = (props: {
         }}
       >
         <FormControlLabel
-          value="start"
+          value={props.fatherInfos.isParent}
           control={<Switch color="primary" />}
           label="Öğrencinin Velisi mi?"
           labelPlacement="start"
+          onClick={(e) => {
+            e.preventDefault();
+            props.setFatherInfos({
+              ...props.fatherInfos,
+              isParent: !props.fatherInfos.isParent,
+            });
+          }}
         />
         <div
           style={{

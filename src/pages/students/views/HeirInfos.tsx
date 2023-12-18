@@ -129,10 +129,16 @@ const HeirInfos = (props: {
         }}
       >
         <FormControlLabel
-          value="start"
+          value={props.heirInfos.isParent}
           control={<Switch color="primary" />}
           label="Öğrencinin Velisi mi?"
           labelPlacement="start"
+          onClick={(e) => {
+            props.setHeirInfos({
+              ...props.heirInfos,
+              isParent: !props.heirInfos.isParent,
+            });
+          }}
         />
         <div
           style={{
