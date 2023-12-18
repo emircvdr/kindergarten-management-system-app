@@ -10,8 +10,8 @@ const ContainerArea = styled.div`
 
 const MotherInfos = (props: {
   motherInfos: {
-    name: string;
-    tc: string;
+    fullName: string;
+    identificationNumber: string;
     phoneNumber: string;
     job: string;
     address: string;
@@ -21,8 +21,8 @@ const MotherInfos = (props: {
   };
   setMotherInfos: React.Dispatch<
     React.SetStateAction<{
-      name: string;
-      tc: string;
+      fullName: string;
+      identificationNumber: string;
       phoneNumber: string;
       job: string;
       address: string;
@@ -56,7 +56,7 @@ const MotherInfos = (props: {
             label="Adı-Soyadı"
             variant="outlined"
             size="small"
-            value={props.motherInfos.name}
+            value={props.motherInfos.fullName}
             onChange={handleChange}
             fullWidth
           />
@@ -65,7 +65,7 @@ const MotherInfos = (props: {
             label="TC Kimlik Numarası"
             variant="outlined"
             size="small"
-            value={props.motherInfos.tc}
+            value={props.motherInfos.identificationNumber}
             onChange={handleChange}
           />
           <TextField
@@ -129,10 +129,10 @@ const MotherInfos = (props: {
         }}
       >
         <FormControlLabel
-          value="top"
+          value="start"
           control={<Switch color="primary" />}
-          label="Öğrencinin Velisi Mi?"
-          labelPlacement="top"
+          label="Öğrencinin Velisi mi?"
+          labelPlacement="start"
         />
         <Button
           variant="contained"

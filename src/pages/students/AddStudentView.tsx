@@ -16,8 +16,8 @@ import HeirInfos from "./views/HeirInfos";
 
 //
 interface IFormData {
-  name: string;
-  tc: string;
+  fullName: string;
+  identificationNumber: string;
   phoneNumber: string;
   job: string;
   address: string;
@@ -39,8 +39,8 @@ const AddStudentView = () => {
       setExpanded(isExpanded ? panel : false);
     };
   const [motherInfos, setMotherInfos] = React.useState<IFormData>({
-    name: "",
-    tc: "",
+    fullName: "",
+    identificationNumber: "",
     phoneNumber: "",
     job: "",
     address: "",
@@ -49,8 +49,8 @@ const AddStudentView = () => {
     isParent: false,
   });
   const [fatherInfos, setFatherInfos] = React.useState<IFormData>({
-    name: "",
-    tc: "",
+    fullName: "",
+    identificationNumber: "",
     phoneNumber: "",
     job: "",
     address: "",
@@ -59,8 +59,8 @@ const AddStudentView = () => {
     isParent: false,
   });
   const [heirInfos, setHeirInfos] = React.useState<IFormData>({
-    name: "",
-    tc: "",
+    fullName: "",
+    identificationNumber: "",
     phoneNumber: "",
     job: "",
     address: "",
@@ -139,6 +139,8 @@ const AddStudentView = () => {
                   setHeirInfos={setHeirInfos}
                   setExpanded={setExpanded}
                   setValue={setValue}
+                  motherInfos={motherInfos}
+                  fatherInfos={fatherInfos}
                 />
               </AccordionDetails>
             </Accordion>

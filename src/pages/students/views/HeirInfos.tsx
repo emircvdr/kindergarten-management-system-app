@@ -9,8 +9,8 @@ const ContainerArea = styled.div`
 `;
 const HeirInfos = (props: {
   heirInfos: {
-    name: string;
-    tc: string;
+    fullName: string;
+    identificationNumber: string;
     phoneNumber: string;
     job: string;
     address: string;
@@ -20,8 +20,8 @@ const HeirInfos = (props: {
   };
   setHeirInfos: React.Dispatch<
     React.SetStateAction<{
-      name: string;
-      tc: string;
+      fullName: string;
+      identificationNumber: string;
       phoneNumber: string;
       job: string;
       address: string;
@@ -32,6 +32,8 @@ const HeirInfos = (props: {
   >;
   setExpanded: React.Dispatch<React.SetStateAction<string | false>>;
   setValue: React.Dispatch<React.SetStateAction<number>>;
+  motherInfos: any;
+  fatherInfos: any;
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setHeirInfos({
@@ -56,7 +58,7 @@ const HeirInfos = (props: {
             label="Adı-Soyadı"
             variant="outlined"
             size="small"
-            value={props.heirInfos.name}
+            value={props.heirInfos.fullName}
             onChange={handleChange}
           />
           <TextField
@@ -64,7 +66,7 @@ const HeirInfos = (props: {
             label="TC Kimlik Numarası"
             variant="outlined"
             size="small"
-            value={props.heirInfos.tc}
+            value={props.heirInfos.identificationNumber}
             onChange={handleChange}
           />
           <TextField
@@ -127,10 +129,10 @@ const HeirInfos = (props: {
         }}
       >
         <FormControlLabel
-          value="top"
+          value="start"
           control={<Switch color="primary" />}
-          label="Öğrencinin Velisi Mi?"
-          labelPlacement="top"
+          label="Öğrencinin Velisi mi?"
+          labelPlacement="start"
         />
         <div
           style={{
@@ -159,6 +161,11 @@ const HeirInfos = (props: {
             onClick={(e) => {
               e.preventDefault();
               props.setValue(2);
+              console.log(
+                props.heirInfos,
+                props.motherInfos,
+                props.fatherInfos
+              );
             }}
             sx={{
               height: "max-content",

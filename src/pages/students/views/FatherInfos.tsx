@@ -7,10 +7,11 @@ const ContainerArea = styled.div`
   justify-content: center;
   gap: 50px;
 `;
+
 const FatherInfos = (props: {
   fatherInfos: {
-    name: string;
-    tc: string;
+    fullName: string;
+    identificationNumber: string;
     phoneNumber: string;
     job: string;
     address: string;
@@ -20,8 +21,8 @@ const FatherInfos = (props: {
   };
   setFatherInfos: React.Dispatch<
     React.SetStateAction<{
-      name: string;
-      tc: string;
+      fullName: string;
+      identificationNumber: string;
       phoneNumber: string;
       job: string;
       address: string;
@@ -55,7 +56,7 @@ const FatherInfos = (props: {
             label="Adı-Soyadı"
             variant="outlined"
             size="small"
-            value={props.fatherInfos.name}
+            value={props.fatherInfos.fullName}
             onChange={handleChange}
           />
           <TextField
@@ -63,7 +64,7 @@ const FatherInfos = (props: {
             label="TC Kimlik Numarası"
             variant="outlined"
             size="small"
-            value={props.fatherInfos.tc}
+            value={props.fatherInfos.identificationNumber}
             onChange={handleChange}
           />
           <TextField
@@ -126,10 +127,10 @@ const FatherInfos = (props: {
         }}
       >
         <FormControlLabel
-          value="top"
+          value="start"
           control={<Switch color="primary" />}
-          label="Öğrencinin Velisi Mi?"
-          labelPlacement="top"
+          label="Öğrencinin Velisi mi?"
+          labelPlacement="start"
         />
         <div
           style={{
