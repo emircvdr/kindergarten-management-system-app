@@ -33,55 +33,55 @@ const Students = styled.div`
     font-size: 16px;
     letter-spacing: 1px;
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 // End point Styled Components //
 
 interface IMenuItem {
-    icon: JSX.Element;
-    title: string;
-    path: string;
+  icon: JSX.Element;
+  title: string;
+  path: string;
 }
 
-
 const SideBar = ({ titleName }: { titleName: string }) => {
+  const menuItems: IMenuItem[] = [
+    {
+      icon: <PiGraduationCapDuotone size={25} />,
+      title: "Öğrenciler",
+      path: "/students/list",
+    },
+    {
+      icon: <PiGraduationCapDuotone size={25} />,
+      title: "Öğrenciler1",
+      path: "/students/list",
+    },
+  ];
 
-
-    const menuItems: IMenuItem[] = [
-        {
-            icon: <PiGraduationCapDuotone size={25} />,
-            title: "Öğrenciler",
-            path: "/students/list",
-        },
-        {
-            icon: <PiGraduationCapDuotone size={25} />,
-            title: "Öğrenciler1",
-            path: "/students/list",
-        }
-    ];
-
-
-    return (
-        <>
-            <SideBarContainer>
-                <h3>Kreş Yönetim Sistemi</h3>
-                <LinksContainer>
-                    {menuItems.map((item, index) => (
-                        <Students key={index}>
-                            {item.icon}
-                            <h1
-                                style={{
-                                    color: titleName == item.title ? "white" : "rgba(0,0,0,0.8)",
-                                    fontWeight: titleName == item.title ? "bold" : "normal",
-                                    background: titleName == item.title ? "rgba(33, 150, 243, 1)" : "white",
-                                }}
-
-                            >{item.title}</h1>
-                        </Students>
-                    ))}
-                </LinksContainer>
-            </SideBarContainer>
-        </>
-    );
+  return (
+    <>
+      <SideBarContainer>
+        <h3>Kreş Yönetim Sistemi</h3>
+        <LinksContainer>
+          {menuItems.map((item, index) => (
+            <Students
+              key={index}
+              style={{
+                color: titleName === item.title ? "white" : "rgba(0,0,0,0.8)",
+                fontWeight: titleName === item.title ? "bold" : "normal",
+                background:
+                  titleName === item.title ? "rgba(33, 150, 243, 1)" : "white",
+              }}
+            >
+              {item.icon}
+              <h1>{item.title}</h1>
+            </Students>
+          ))}
+        </LinksContainer>
+      </SideBarContainer>
+    </>
+  );
 };
 
 export default SideBar;
