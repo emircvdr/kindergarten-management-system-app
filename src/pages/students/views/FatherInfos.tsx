@@ -52,7 +52,7 @@ const FatherInfos = (props: {
           }}
         >
           <TextField
-            name="name"
+            name="fullName"
             label="Adı-Soyadı"
             variant="outlined"
             size="small"
@@ -60,7 +60,7 @@ const FatherInfos = (props: {
             onChange={handleChange}
           />
           <TextField
-            name="tc"
+            name="identificationNumber"
             label="TC Kimlik Numarası"
             variant="outlined"
             size="small"

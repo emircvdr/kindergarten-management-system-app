@@ -54,7 +54,7 @@ const HeirInfos = (props: {
           }}
         >
           <TextField
-            name="name"
+            name="fullName"
             label="Adı-Soyadı"
             variant="outlined"
             size="small"
@@ -62,7 +62,7 @@ const HeirInfos = (props: {
             onChange={handleChange}
           />
           <TextField
-            name="tc"
+            name="identificationNumber"
             label="TC Kimlik Numarası"
             variant="outlined"
             size="small"
