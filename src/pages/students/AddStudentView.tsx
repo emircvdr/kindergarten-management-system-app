@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Content from '../../components/Content/Content'
 import { AntTab, AntTabs, TabPanel, a11yProps } from '../../components/Tabs/Tabs';
+import StudentInfo from './StudentInfo';
+import OtherInfo from './OtherInfo';
 
 const AddStudentView = () => {
 
@@ -22,13 +24,13 @@ const AddStudentView = () => {
                         <AntTab label="Diğer Bilgiler" {...a11yProps(2)} />
                     </AntTabs>
                     <TabPanel value={value} index={0}>
-                        asd
+                        <StudentInfo />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         asd
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        asd
+                        <OtherInfo/>
                     </TabPanel>
                 </>
             }
