@@ -1,6 +1,7 @@
 import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
+import { IStudents } from "../../../../interfaces/IStudents";
 
 const ContainerArea = styled.div`
   display: flex;
@@ -8,38 +9,23 @@ const ContainerArea = styled.div`
   gap: 120px;
 `;
 const HeirInfos = (props: {
-  heirInfos: {
-    fullName: string;
-    identificationNumber: string;
-    phoneNumber: string;
-    job: string;
-    address: string;
-    workAddress: string;
-    email: string;
-    isParent: boolean;
-  };
-  setHeirInfos: React.Dispatch<
-    React.SetStateAction<{
-      fullName: string;
-      identificationNumber: string;
-      phoneNumber: string;
-      job: string;
-      address: string;
-      workAddress: string;
-      email: string;
-      isParent: boolean;
-    }>
-  >;
+  studentInfos: IStudents.ICreateStudent;
+  setStudentInfos: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
+  setTabValue: React.Dispatch<React.SetStateAction<number>>;
   setExpanded: React.Dispatch<React.SetStateAction<string | false>>;
-  setValue: React.Dispatch<React.SetStateAction<number>>;
-  motherInfos: any;
-  fatherInfos: any;
 }) => {
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setHeirInfos({
-      ...props.heirInfos,
-      [event.target.name]: event.target.value,
-    });
+    props.setStudentInfos({
+      ...props.studentInfos,
+      parent: {
+        ...props.studentInfos.parent,
+        heir: {
+          ...props.studentInfos.parent.heir,
+          [event.target.name]: event.target.value,
+        }
+      }
+    })
   };
 
   return (
@@ -58,7 +44,7 @@ const HeirInfos = (props: {
             label="Adı-Soyadı"
             variant="outlined"
             size="small"
-            value={props.heirInfos.fullName}
+            value={props.studentInfos.parent.heir.fullName}
             onChange={handleChange}
           />
           <TextField
@@ -66,7 +52,7 @@ const HeirInfos = (props: {
             label="TC Kimlik Numarası"
             variant="outlined"
             size="small"
-            value={props.heirInfos.identificationNumber}
+            value={props.studentInfos.parent.heir.identificationNumber}
             onChange={handleChange}
           />
           <TextField
@@ -74,7 +60,7 @@ const HeirInfos = (props: {
             label="Cep Telefonu"
             variant="outlined"
             size="small"
-            value={props.heirInfos.phoneNumber}
+            value={props.studentInfos.parent.heir.phoneNumber}
             onChange={handleChange}
           />
           <TextField
@@ -82,7 +68,7 @@ const HeirInfos = (props: {
             label="Mesleği"
             variant="outlined"
             size="small"
-            value={props.heirInfos.job}
+            value={props.studentInfos.parent.heir.job}
             onChange={handleChange}
           />
           <TextField
@@ -90,7 +76,7 @@ const HeirInfos = (props: {
             label="E-mail"
             variant="outlined"
             size="small"
-            value={props.heirInfos.email}
+            value={props.studentInfos.parent.heir.email}
             onChange={handleChange}
           />
         </div>
@@ -107,7 +93,7 @@ const HeirInfos = (props: {
             label="Ev Adresi"
             multiline
             rows={5}
-            value={props.heirInfos.address}
+            value={props.studentInfos.parent.heir.address}
             onChange={handleChange}
           />
           <TextField
@@ -115,7 +101,7 @@ const HeirInfos = (props: {
             label="İş Adresi"
             multiline
             rows={5}
-            value={props.heirInfos.workAddress}
+            value={props.studentInfos.parent.heir.workAddress}
             onChange={handleChange}
           />
         </div>
@@ -129,15 +115,21 @@ const HeirInfos = (props: {
         }}
       >
         <FormControlLabel
-          value={props.heirInfos.isParent}
+          value={props.studentInfos.parent.heir.isParent}
           control={<Switch color="primary" />}
           label="Öğrencinin Velisi mi?"
           labelPlacement="start"
           onClick={(e) => {
-            props.setHeirInfos({
-              ...props.heirInfos,
-              isParent: !props.heirInfos.isParent,
-            });
+            props.setStudentInfos({
+              ...props.studentInfos,
+              parent: {
+                ...props.studentInfos.parent,
+                heir: {
+                  ...props.studentInfos.parent.heir,
+                  isParent: !props.studentInfos.parent.heir.isParent,
+                }
+              }
+            })
           }}
         />
         <div
@@ -150,32 +142,16 @@ const HeirInfos = (props: {
             variant="contained"
             color="error"
             size="small"
-            onClick={(e) => {
-              e.preventDefault();
-              props.setExpanded("panel2");
-            }}
-            sx={{
-              height: "max-content",
-            }}
-          >
+            onClick={(e) => props.setExpanded("panel2")}
+            sx={{ height: "max-content" }}>
             Geri
           </Button>
           <Button
             variant="contained"
             color="primary"
             size="small"
-            onClick={(e) => {
-              e.preventDefault();
-              props.setValue(2);
-              console.log(
-                props.heirInfos,
-                props.motherInfos,
-                props.fatherInfos
-              );
-            }}
-            sx={{
-              height: "max-content",
-            }}
+            onClick={(e) => props.setTabValue(2)}
+            sx={{ height: "max-content" }}
           >
             İleri
           </Button>

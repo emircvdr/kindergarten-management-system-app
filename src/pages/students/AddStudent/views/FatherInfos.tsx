@@ -1,6 +1,7 @@
 import { Button, FormControlLabel, Switch, TextField } from "@mui/material";
 import React, { SetStateAction } from "react";
 import styled from "styled-components";
+import { IStudents } from "../../../../interfaces/IStudents";
 
 const ContainerArea = styled.div`
   display: flex;
@@ -9,34 +10,21 @@ const ContainerArea = styled.div`
 `;
 
 const FatherInfos = (props: {
-  fatherInfos: {
-    fullName: string;
-    identificationNumber: string;
-    phoneNumber: string;
-    job: string;
-    address: string;
-    workAddress: string;
-    email: string;
-    isParent: boolean;
-  };
-  setFatherInfos: React.Dispatch<
-    React.SetStateAction<{
-      fullName: string;
-      identificationNumber: string;
-      phoneNumber: string;
-      job: string;
-      address: string;
-      workAddress: string;
-      email: string;
-      isParent: boolean;
-    }>
-  >;
+  studentState: IStudents.ICreateStudent;
+  setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
   setExpanded: React.Dispatch<SetStateAction<string | false>>;
 }) => {
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setFatherInfos({
-      ...props.fatherInfos,
-      [event.target.name]: event.target.value,
+    props.setStudentState({
+      ...props.studentState,
+      parent: {
+        ...props.studentState.parent,
+        father: {
+          ...props.studentState.parent.father,
+          [event.target.name]: event.target.value,
+        }
+      }
     });
   };
 
@@ -56,7 +44,7 @@ const FatherInfos = (props: {
             label="Adı-Soyadı"
             variant="outlined"
             size="small"
-            value={props.fatherInfos.fullName}
+            value={props.studentState.parent.father.fullName}
             onChange={handleChange}
           />
           <TextField
@@ -64,7 +52,7 @@ const FatherInfos = (props: {
             label="TC Kimlik Numarası"
             variant="outlined"
             size="small"
-            value={props.fatherInfos.identificationNumber}
+            value={props.studentState.parent.father.identificationNumber}
             onChange={handleChange}
           />
           <TextField
@@ -72,7 +60,7 @@ const FatherInfos = (props: {
             label="Cep Telefonu"
             variant="outlined"
             size="small"
-            value={props.fatherInfos.phoneNumber}
+            value={props.studentState.parent.father.phoneNumber}
             onChange={handleChange}
           />
           <TextField
@@ -80,7 +68,7 @@ const FatherInfos = (props: {
             label="Mesleği"
             variant="outlined"
             size="small"
-            value={props.fatherInfos.job}
+            value={props.studentState.parent.father.job}
             onChange={handleChange}
           />
           <TextField
@@ -88,7 +76,7 @@ const FatherInfos = (props: {
             label="E-mail"
             variant="outlined"
             size="small"
-            value={props.fatherInfos.email}
+            value={props.studentState.parent.father.email}
             onChange={handleChange}
           />
         </div>
@@ -105,7 +93,7 @@ const FatherInfos = (props: {
             label="Ev Adresi"
             multiline
             rows={5}
-            value={props.fatherInfos.address}
+            value={props.studentState.parent.father.address}
             onChange={handleChange}
           />
           <TextField
@@ -113,7 +101,7 @@ const FatherInfos = (props: {
             label="İş Adresi"
             multiline
             rows={5}
-            value={props.fatherInfos.workAddress}
+            value={props.studentState.parent.father.workAddress}
             onChange={handleChange}
           />
         </div>
@@ -127,17 +115,22 @@ const FatherInfos = (props: {
         }}
       >
         <FormControlLabel
-          value={props.fatherInfos.isParent}
+          value={props.studentState.parent.father.isParent}
           control={<Switch color="primary" />}
           label="Öğrencinin Velisi mi?"
           labelPlacement="start"
-          onClick={(e) => {
-            e.preventDefault();
-            props.setFatherInfos({
-              ...props.fatherInfos,
-              isParent: !props.fatherInfos.isParent,
-            });
-          }}
+          onClick={(e) =>
+            props.setStudentState({
+              ...props.studentState,
+              parent: {
+                ...props.studentState.parent,
+                father: {
+                  ...props.studentState.parent.father,
+                  isParent: !props.studentState.parent.father.isParent,
+                }
+              }
+            })
+          }
         />
         <div
           style={{
