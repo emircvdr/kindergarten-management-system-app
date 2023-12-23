@@ -1,11 +1,4 @@
 import React, { useState } from "react";
-import Content from "../../components/Content/Content";
-import {
-  AntTab,
-  AntTabs,
-  TabPanel,
-  a11yProps,
-} from "../../components/Tabs/Tabs";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -25,7 +18,11 @@ interface IFormData {
   isParent: boolean;
   email: string;
 }
-//
+import Content from '../../components/Content/Content'
+import { AntTab, AntTabs, TabPanel, a11yProps } from '../../components/Tabs/Tabs';
+import StudentInfo from './StudentInfo';
+import OtherInfo from './OtherInfo';
+
 
 const AddStudentView = () => {
   const [value, setValue] = useState(0);
@@ -81,7 +78,7 @@ const AddStudentView = () => {
             <AntTab label="Diğer Bilgiler" {...a11yProps(2)} />
           </AntTabs>
           <TabPanel value={value} index={0}>
-            asd
+            <StudentInfo />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Accordion
@@ -146,7 +143,7 @@ const AddStudentView = () => {
             </Accordion>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            asd
+            <OtherInfo />
           </TabPanel>
         </>
       }
