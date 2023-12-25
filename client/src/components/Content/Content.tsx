@@ -26,13 +26,12 @@ const Content = ({
       >
         <div
           style={{
-            padding: "15px 15px",
-            textTransform: "uppercase",
+            padding: "15px 15px 15px 20px",
+            textTransform: "capitalize",
             boxShadow: "0 4px 2px -2px rgba(128,128,128,.3)",
             fontSize: "24px",
-            letterSpacing: "1px",
-            fontFamily: "Roboto, sans-serif",
             justifyContent: "center",
+            backgroundColor: "rgb(239, 239, 239, 0.5)",
             fontWeight: 400,
           }}
         >
@@ -40,7 +39,7 @@ const Content = ({
         </div>
         <div
           style={{
-            padding: "10px 15px",
+            padding: "10px 15px"
           }}
         >
           {content}

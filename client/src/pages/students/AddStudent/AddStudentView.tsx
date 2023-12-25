@@ -10,17 +10,6 @@ import StudentInfo from './views/StudentInfo';
 import OtherInfo from './views/OtherInfo';
 import { IStudents } from "../../../interfaces/IStudents";
 
-//
-interface IFormData {
-  fullName: string;
-  identificationNumber: string;
-  phoneNumber: string;
-  job: string;
-  address: string;
-  workAddress: string;
-  isParent: boolean;
-  email: string;
-}
 
 const initialParentInfos: IStudents.IParent = {
   fullName: "",
@@ -116,7 +105,6 @@ const AddStudentView = () => {
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-
               >
                 Anne Bilgileri
               </AccordionSummary>
@@ -135,7 +123,6 @@ const AddStudentView = () => {
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-
               >
                 Baba Bilgileri
               </AccordionSummary>

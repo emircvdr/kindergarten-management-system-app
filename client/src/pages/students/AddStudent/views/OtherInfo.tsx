@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, FormControl, InputLabel } from "@mui/material";
 import { IStudents } from "../../../../interfaces/IStudents";
@@ -43,8 +43,6 @@ const StudentInfo = (props: {
   setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const [selectedAlerji, setSelectedAlerji] = React.useState("");
-  const [selectedKronik, setSelectedKronik] = React.useState("");
 
   const emergencyContact = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setStudentState({
