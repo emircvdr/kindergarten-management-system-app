@@ -6,6 +6,7 @@ import StyledDataGrid from "../../../components/StyledDataGrid/StyledDataGrid";
 import styled from "styled-components";
 import { GridColDef } from "@mui/x-data-grid";
 import { KindergartenAPI } from "../../../services/broker";
+import { IStudents } from "../../../interfaces/IStudents";
 
 const DataGridContainer = styled.div`
   width: 100%;
@@ -53,11 +54,22 @@ const columns: GridColDef[] = [
 const StudentList = () => {
   const navigate = useNavigate();
 
-  const [rows, setRows] = React.useState<any[]>([]);
+  const [rows, setRows] = React.useState<IStudents.IStudent[]>([]);
+  const [selectedRow, setSelectedRow] = React.useState<IStudents.IStudent[]>(
+    []
+  );
+  const handleSearch = (e: any) => {
+    const value = e.target.value;
+    const search = rows.filter(
+      (row) => row.firstName.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
+    setSelectedRow(search);
+  };
 
   React.useEffect(() => {
     KindergartenAPI.GetStudents().then((res) => {
       setRows(res.map((item: any) => ({ ...item, id: item._id })));
+      setSelectedRow(res.map((item: any) => ({ ...item, id: item._id })));
     });
   }, []);
 
@@ -89,6 +101,7 @@ const StudentList = () => {
                 variant="outlined"
                 fullWidth
                 size="small"
+                onChange={handleSearch}
               />
             </div>
             <div style={{ width: "20%" }}>
@@ -105,7 +118,7 @@ const StudentList = () => {
           </div>
           <DataGridContainer>
             <StyledDataGrid
-              rows={rows}
+              rows={selectedRow}
               columns={columns}
               initialState={{
                 pagination: {
