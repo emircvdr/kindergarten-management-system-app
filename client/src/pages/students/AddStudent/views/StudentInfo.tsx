@@ -10,6 +10,7 @@ import { trTR } from "@mui/x-date-pickers";
 import { IStudents } from "../../../../interfaces/IStudents";
 import dayjs from "dayjs";
 import { StyledContainer, StyledContainerLeft, StyledContainerRight, StyledFileInput, StyledIcon, StyledIconContainer } from "../style";
+import { useNavigate } from "react-router-dom";
 
 const StudentInfo = (props: {
   studentState: IStudents.ICreateStudent;
@@ -59,6 +60,8 @@ const StudentInfo = (props: {
       }
     }
   };
+
+  const navigate = useNavigate();
 
 
   return (
@@ -214,7 +217,7 @@ const StudentInfo = (props: {
           }}
         >
           <Button variant="contained" fullWidth onClick={() => { props.setTabValue(1); console.log(props) }}>İLERLE</Button>
-          <Button variant="contained" fullWidth color="error">GERİ DÖN</Button>
+          <Button variant="contained" fullWidth color="error" onClick={() => navigate("/students/list")}>GERİ DÖN</Button>
         </div>
       </div>
 
