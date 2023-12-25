@@ -2,7 +2,7 @@ import React from "react";
 import Content from "../../../components/Content/Content";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import StyledDataGrid from "./StyledDataGrid";
+import StyledDataGrid from "../../../components/StyledDataGrid/StyledDataGrid";
 import styled from "styled-components";
 import { GridColDef } from "@mui/x-data-grid";
 
