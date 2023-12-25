@@ -4,14 +4,19 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MotherInfos from "./views/MotherInfos";
 import FatherInfos from "./views/FatherInfos";
 import HeirInfos from "./views/HeirInfos";
-import Content from '../../../components/Content/Content'
-import { AntTab, AntTabs, TabPanel, a11yProps } from '../../../components/Tabs/Tabs';
-import StudentInfo from './views/StudentInfo';
-import OtherInfo from './views/OtherInfo';
+import Content from "../../../components/Content/Content";
+import {
+  AntTab,
+  AntTabs,
+  TabPanel,
+  a11yProps,
+} from "../../../components/Tabs/Tabs";
+import StudentInfo from "./views/StudentInfo";
+import OtherInfo from "./views/OtherInfo";
 import { IStudents } from "../../../interfaces/IStudents";
 import { KindergartenAPI } from "../../../services/broker";
 import { useNavigate } from "react-router-dom";
-
+import Toast from "../../../components/Toast/Toast";
 
 const initialParentInfos: IStudents.IParent = {
   fullName: "",
@@ -52,8 +57,7 @@ const initialStudentInfos: IStudents.ICreateStudent = {
     emergencyContactPhoneNumber: "",
     emergencyContactDegreeOfProximity: "",
   },
-}
-
+};
 
 const AddStudentView = () => {
   // tab state -- start
@@ -67,23 +71,40 @@ const AddStudentView = () => {
   // accordion state -- start
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
-  const handleAccordion = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const handleAccordion =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
   // accordion state -- end
 
   const navigate = useNavigate();
 
   // add student form data -- start
-  const [studentInfos, setStudentInfos] = React.useState<IStudents.ICreateStudent>(initialStudentInfos)
+  const [studentInfos, setStudentInfos] =
+    React.useState<IStudents.ICreateStudent>(initialStudentInfos);
   // add student form data -- end
 
-
   const handleSubmit = () => {
-    KindergartenAPI.CreateStudent(studentInfos).then((res) => {
-      navigate("/students/list");
-    })
-  }
+    Toast.fire({
+      icon: "info",
+      title: "Öğrenci ekleniyor...",
+      timer: 15000,
+    });
+    KindergartenAPI.CreateStudent(studentInfos)
+      .then((res) => {
+        Toast.fire({
+          icon: "success",
+          title: "Öğrenci başarıyla eklendi.",
+        });
+        navigate("/students/list");
+      })
+      .catch((err) => {
+        Toast.fire({
+          icon: "error",
+          title: "Öğrenci eklenirken bir hata oluştu.",
+        });
+      });
+  };
 
   return (
     <Content
@@ -108,9 +129,7 @@ const AddStudentView = () => {
               expanded={expanded === "panel1"}
               onChange={handleAccordion("panel1")}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-              >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 Anne Bilgileri
               </AccordionSummary>
               <AccordionDetails sx={{ height: "calc(100vh - 340px)" }}>
@@ -126,9 +145,7 @@ const AddStudentView = () => {
               expanded={expanded === "panel2"}
               onChange={handleAccordion("panel2")}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-              >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 Baba Bilgileri
               </AccordionSummary>
               <AccordionDetails sx={{ height: "calc(100vh - 345px)" }}>
@@ -143,9 +160,7 @@ const AddStudentView = () => {
               expanded={expanded === "panel3"}
               onChange={handleAccordion("panel3")}
             >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-              >
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 Vasi Bilgileri
               </AccordionSummary>
               <AccordionDetails sx={{ height: "calc(100vh - 340px)" }}>
