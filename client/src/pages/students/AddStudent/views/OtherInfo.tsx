@@ -42,6 +42,7 @@ const StudentInfo = (props: {
   studentState: IStudents.ICreateStudent;
   setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
+  handleSubmit: () => void;
 }) => {
 
   const emergencyContact = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,10 +50,7 @@ const StudentInfo = (props: {
       ...props.studentState,
       other: {
         ...props.studentState.other,
-        emergencyContact: {
-          ...props.studentState.other.emergencyContact,
-          [e.target.name]: e.target.value,
-        },
+        [e.target.name]: e.target.value,
       },
     });
   }
@@ -137,24 +135,24 @@ const StudentInfo = (props: {
                 Acil Durumda Ulaşılacak Kişi
               </div>
               <TextField
-                name="fullName"
+                name="emergencyContactFullName"
                 size="small"
                 label="Adı-Soyadı"
-                value={props.studentState.other.emergencyContact.fullName}
+                value={props.studentState.other.emergencyContactFullName}
                 onChange={emergencyContact}
               />
               <TextField
-                name="phoneNumber"
+                name="emergencyContactPhoneNumber"
                 size="small"
                 label="Telefon Numarası"
-                value={props.studentState.other.emergencyContact.phoneNumber}
+                value={props.studentState.other.emergencyContactPhoneNumber}
                 onChange={emergencyContact}
               />
               <TextField
-                name="degreeOfProximity"
+                name="emergencyContactDegreeOfProximity"
                 size="small"
                 label="Yakınlık Derecesi"
-                value={props.studentState.other.emergencyContact.degreeOfProximity}
+                value={props.studentState.other.emergencyContactDegreeOfProximity}
                 onChange={emergencyContact}
               />
             </StyledTextContainer>
@@ -167,16 +165,13 @@ const StudentInfo = (props: {
                 label="Alerji"
                 size="small"
                 required
-                value={String(props.studentState.other.allergy.isAllergy)}
+                value={String(props.studentState.other.isAllergy)}
                 onChange={(e) => {
                   props.setStudentState({
                     ...props.studentState,
                     other: {
                       ...props.studentState.other,
-                      allergy: {
-                        ...props.studentState.other.allergy,
-                        isAllergy: Boolean(e.target.value),
-                      },
+                      isAllergy: Boolean(e.target.value),
                     },
                   });
                 }}
@@ -185,12 +180,22 @@ const StudentInfo = (props: {
                 <MenuItem value="false">Hayır</MenuItem>
               </Select>
             </FormControl>
-            {props.studentState.other.allergy.isAllergy ?
+            {props.studentState.other.isAllergy ?
               <TextField
                 rows={4}
                 multiline
                 size="small"
                 label="Alerji Detayları"
+                value={props.studentState.other.allergyType}
+                onChange={(e) => {
+                  props.setStudentState({
+                    ...props.studentState,
+                    other: {
+                      ...props.studentState.other,
+                      allergyType: e.target.value,
+                    },
+                  });
+                }}
               /> : null
             }
 
@@ -200,16 +205,13 @@ const StudentInfo = (props: {
                 label="Kronik"
                 size="small"
                 required
-                value={String(props.studentState.other.chronicDisease.isChronicDisease)}
+                value={String(props.studentState.other.isChronicDisease)}
                 onChange={(e) => {
                   props.setStudentState({
                     ...props.studentState,
                     other: {
                       ...props.studentState.other,
-                      chronicDisease: {
-                        ...props.studentState.other.chronicDisease,
-                        isChronicDisease: Boolean(e.target.value),
-                      },
+                      isChronicDisease: Boolean(e.target.value),
                     },
                   });
                 }}
@@ -219,8 +221,18 @@ const StudentInfo = (props: {
               </Select>
             </FormControl>
 
-            {props.studentState.other.chronicDisease.isChronicDisease ?
+            {props.studentState.other.isChronicDisease ?
               <TextField
+                value={props.studentState.other.chronicDiseaseType}
+                onChange={(e) => {
+                  props.setStudentState({
+                    ...props.studentState,
+                    other: {
+                      ...props.studentState.other,
+                      chronicDiseaseType: e.target.value,
+                    },
+                  });
+                }}
                 rows={4}
                 multiline
                 size="small"
@@ -239,7 +251,7 @@ const StudentInfo = (props: {
             gap: "10px",
           }}
         >
-          <Button variant="contained" fullWidth size="small">KAYDET</Button>
+          <Button variant="contained" fullWidth size="small" onClick={props.handleSubmit}>KAYDET</Button>
           <Button variant="contained" color="error" fullWidth size="small">GERİ DÖN</Button>
         </div>
       </div>

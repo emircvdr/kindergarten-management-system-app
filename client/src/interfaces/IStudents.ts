@@ -1,6 +1,6 @@
 export namespace IStudents {
     export interface IStudent {
-        photo: File | null;
+        photo: string;
         identificationNumber: string;
         firstName: string;
         lastName: string;
@@ -25,21 +25,16 @@ export namespace IStudents {
     export interface IOther {
         isParentsTogether: string;
         bloodGroup: string;
-        allergy: {
-            isAllergy: boolean;
-            allergyType: string;
-        };
-        chronicDisease: {
-            isChronicDisease: boolean;
-            chronicDiseaseType: string;
-        };
-        emergencyContact: {
-            fullName: string;
-            phoneNumber: string;
-            degreeOfProximity: string;
-        }
+        isAllergy: boolean;
+        allergyType: string;
+        isChronicDisease: boolean;
+        chronicDiseaseType: string;
+        emergencyContactFullName: string;
+        emergencyContactPhoneNumber: string;
+        emergencyContactDegreeOfProximity: string;
     }
-    
+
+
     export interface ICreateStudent {
         student: IStudent;
         parent: {

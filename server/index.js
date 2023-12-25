@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import homeRoutes from './routes/home.js';
+import studentRoutes from './routes/student.js';
 
 const app = express();
 dotenv.config();
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
     });
 });
 
-app.use("/home", homeRoutes);
+app.use("/student", studentRoutes);
 
 
 const PORT = process.env.PORT || 5000;

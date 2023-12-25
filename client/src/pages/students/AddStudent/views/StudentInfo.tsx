@@ -9,8 +9,9 @@ import { Button, FormControl, InputLabel } from "@mui/material";
 import { trTR } from "@mui/x-date-pickers";
 import { IStudents } from "../../../../interfaces/IStudents";
 import dayjs from "dayjs";
-import { StyledContainer, StyledContainerLeft, StyledContainerRight, StyledFileInput, StyledIcon, StyledIconContainer } from "../style";
+import { StyledContainer, StyledContainerLeft, StyledContainerRight, StyledIcon, StyledIconContainer } from "../style";
 import { useNavigate } from "react-router-dom";
+import Base64 from "../../../../components/Base64Select/Base64";
 
 const StudentInfo = (props: {
   studentState: IStudents.ICreateStudent;
@@ -38,27 +39,14 @@ const StudentInfo = (props: {
     });
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-
-    if (selectedFile) {
-      if (
-        selectedFile.type !== "image/png" &&
-        selectedFile.type !== "image/jpeg"
-      ) {
-        alert(
-          "Dosya türü desteklenmiyor. Lütfen .png veya .jpeg/.jpg uzantılı bir dosya seçin."
-        );
-      } else {
-        props.setStudentState({
-          ...props.studentState,
-          student: {
-            ...props.studentState.student,
-            photo: selectedFile,
-          }
-        });
+  const handleFileChange = (e: any) => {
+    props.setStudentState({
+      ...props.studentState,
+      student: {
+        ...props.studentState.student,
+        photo: e.base64,
       }
-    }
+    });
   };
 
   const navigate = useNavigate();
@@ -76,7 +64,7 @@ const StudentInfo = (props: {
         <StyledIconContainer htmlFor="createPersonalPhoto">
           {props.studentState.student.photo ? (
             <img
-              src={URL.createObjectURL(props.studentState.student.photo)}
+              src={props.studentState.student.photo}
               alt="Seçilen Fotoğraf"
               style={{
                 maxHeight: "80px",
@@ -87,14 +75,7 @@ const StudentInfo = (props: {
           ) : (
             <StyledIcon />
           )}
-
-          <span>Fotograf Seç</span>
-          <StyledFileInput
-            id="createPersonalPhoto"
-            type="file"
-            accept=".png, .jpeg, .jpg"
-            onChange={handleFileChange}
-          />
+          <Base64 onDone={handleFileChange} />
         </StyledIconContainer>
         <StyledContainer>
           <StyledContainerLeft>
@@ -216,7 +197,7 @@ const StudentInfo = (props: {
             width: "80%"
           }}
         >
-          <Button variant="contained" fullWidth onClick={() => { props.setTabValue(1); console.log(props) }}>İLERLE</Button>
+          <Button variant="contained" fullWidth onClick={() => props.setTabValue(1)}>İLERLE</Button>
           <Button variant="contained" fullWidth color="error" onClick={() => navigate("/students/list")}>GERİ DÖN</Button>
         </div>
       </div>

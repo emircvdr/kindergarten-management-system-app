@@ -9,6 +9,8 @@ import { AntTab, AntTabs, TabPanel, a11yProps } from '../../../components/Tabs/T
 import StudentInfo from './views/StudentInfo';
 import OtherInfo from './views/OtherInfo';
 import { IStudents } from "../../../interfaces/IStudents";
+import { KindergartenAPI } from "../../../services/broker";
+import { useNavigate } from "react-router-dom";
 
 
 const initialParentInfos: IStudents.IParent = {
@@ -24,7 +26,7 @@ const initialParentInfos: IStudents.IParent = {
 
 const initialStudentInfos: IStudents.ICreateStudent = {
   student: {
-    photo: null,
+    photo: "",
     identificationNumber: "",
     firstName: "",
     lastName: "",
@@ -42,19 +44,13 @@ const initialStudentInfos: IStudents.ICreateStudent = {
   other: {
     bloodGroup: "",
     isParentsTogether: "",
-    allergy: {
-      allergyType: "",
-      isAllergy: false,
-    },
-    chronicDisease: {
-      chronicDiseaseType: "",
-      isChronicDisease: false,
-    },
-    emergencyContact: {
-      fullName: "",
-      phoneNumber: "",
-      degreeOfProximity: "",
-    }
+    allergyType: "",
+    isAllergy: false,
+    chronicDiseaseType: "",
+    isChronicDisease: false,
+    emergencyContactFullName: "",
+    emergencyContactPhoneNumber: "",
+    emergencyContactDegreeOfProximity: "",
   },
 }
 
@@ -76,9 +72,18 @@ const AddStudentView = () => {
   };
   // accordion state -- end
 
+  const navigate = useNavigate();
+
   // add student form data -- start
   const [studentInfos, setStudentInfos] = React.useState<IStudents.ICreateStudent>(initialStudentInfos)
   // add student form data -- end
+
+
+  const handleSubmit = () => {
+    KindergartenAPI.CreateStudent(studentInfos).then((res) => {
+      navigate("/students/list");
+    })
+  }
 
   return (
     <Content
@@ -158,6 +163,7 @@ const AddStudentView = () => {
               studentState={studentInfos}
               setStudentState={setStudentInfos}
               setTabValue={setValue}
+              handleSubmit={handleSubmit}
             />
           </TabPanel>
         </>
