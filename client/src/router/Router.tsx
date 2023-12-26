@@ -5,6 +5,7 @@ import Dashboard from "../pages/main/Dashboard";
 import AddStudentView from "../pages/students/AddStudent/AddStudentView";
 import EditStudents from "../pages/students/EditStudent/EditStudent";
 import StudentList from "../pages/students/StudentList/StudentList";
+import AddPreliminaryInterview from "../pages/preliminaryInterview/AddPreliminaryInterview/AddPreliminaryInterview";
 
 const Router = () => {
   return (
@@ -17,6 +18,9 @@ const Router = () => {
         <Route path="/students/add" element={<AddStudentView />} />
         <Route path="/students/edit" element={<EditStudents />} />
         <Route path="/students/list" element={<StudentList />} />
+
+        {/* Preliminary Interview */}
+        <Route path="/preliminary-interview/add" element={<AddPreliminaryInterview />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />
