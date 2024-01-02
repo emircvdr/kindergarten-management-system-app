@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MotherInfos from "./views/MotherInfos";
 import FatherInfos from "./views/FatherInfos";

@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { GridColDef } from "@mui/x-data-grid";
 import { KindergartenAPI } from "../../../services/broker";
 import { IStudents } from "../../../interfaces/IStudents";
+import { useParams } from "react-router-dom";
 
 const DataGridContainer = styled.div`
   width: 100%;
@@ -18,41 +19,48 @@ const Edit = styled.div`
     text-decoration: underline;
   }
 `;
-const columns: GridColDef[] = [
-  {
-    field: "firstName",
-    headerName: "Adı",
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: "lastName",
-    headerName: "Soyadı",
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: "birthDate",
-    headerName: "Doğum Tarihi",
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: "id",
-    headerName: "İşlemler",
-    minWidth: 90,
-    width: 90,
-    renderCell: (params: any) => {
-      return <Edit>Düzenle</Edit>;
-    },
-  },
-];
 
 const StudentList = () => {
   const navigate = useNavigate();
+  
+
+  const columns: GridColDef[] = [
+    {
+      field: "firstName",
+      headerName: "Adı",
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: "lastName",
+      headerName: "Soyadı",
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: "birthDate",
+      headerName: "Doğum Tarihi",
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: "id",
+      headerName: "İşlemler",
+      minWidth: 90,
+      width: 90,
+      renderCell: (params: any) => {
+        return (
+        <Edit onClick={e => navigate(`/students/edit/${params.row.id}`)}>
+          Düzenle
+        </Edit>
+        );
+      },
+    },
+  ];
+  
 
   const [rows, setRows] = React.useState<IStudents.IStudent[]>([]);
   const [selectedRow, setSelectedRow] = React.useState<IStudents.IStudent[]>(
@@ -72,6 +80,10 @@ const StudentList = () => {
       setSelectedRow(res.map((item: any) => ({ ...item, id: item._id })));
     });
   }, []);
+
+  const handleEdit = (studentId: string) => {
+    navigate(`/students/edit/${studentId}`);
+  };
 
   return (
     <Content

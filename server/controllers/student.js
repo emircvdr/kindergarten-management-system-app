@@ -122,3 +122,94 @@ export const getStudents = async (req, res) => {
     });
   }
 };
+
+export const getStudent = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const student = await Student.findById(id);
+    const mother = await StudentMother.find({ studentId: id });
+    const father = await StudentFather.find({ studentId: id });
+    const heir = await StudentHeir.find({ studentId: id });
+    const other = await StudentOther.find({ studentId: id });
+    const photo = await StudentPhoto.find({ studentId: id });
+
+    const emptyParent = {
+      studentId: id,
+      fullName: "",
+      identificationNumber: "",
+      phoneNumber: "",
+      job: "",
+      address: "",
+      workAddress: "",
+      email: "",
+      isParent: false,
+      createdAt: "",
+      updatedAt: "",
+    };
+
+    if (!student) {
+      return res.status(400).json({
+        message: "öğrenci bulunamadı!",
+        error,
+      });
+    }
+    if (!mother[0]) {
+      mother[0] = emptyParent;
+    }
+    if (!father[0]) {
+      father[0] = emptyParent;
+    }
+    if (!heir[0]) {
+      heir[0] = emptyParent;
+    }
+    if (!other[0]) {
+      other[0] = {
+        studentId:id, 
+      bloodGroup: "",
+      isParentsTogether: "",
+      isAllergy: false,
+      allergyType: "",
+      isChronicDisease: false,
+      chronicDiseaseType: "",
+      emergencyContactFullName: "",
+      emergencyContactPhoneNumber: "",
+      emergencyContactDegreeOfProximity: ""
+      }
+    }
+    if (!photo[0]) {
+      photo[0] = {
+        studentId:id,
+        photo: "",
+      }
+    } 
+    const studentCopy = {
+      identificationNumber: student.identificationNumber,
+    firstName: student.firstName,
+    lastName: student.lastName,
+    birthDate: student.birthDate,
+    birthPlace: student.birthPlace,
+    class: student.class,
+    gender: student.gender,
+    nationality: student.nationality,
+    createdAt:student.createdAt,
+    updatedAt: student.updatedAt,
+    photo: photo[0].photo,
+  }
+    const data ={
+      student:studentCopy,
+      parent:{
+        mother:mother[0],
+        father:father[0],
+        heir:heir[0]
+      },
+      other:other[0],
+    }
+    
+    res.status(200).json(data)
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong",
+      error,
+    });
+  }
+};
