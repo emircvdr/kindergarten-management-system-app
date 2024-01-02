@@ -16,7 +16,7 @@ const Router = () => {
 
         {/* Students */}
         <Route path="/students/add" element={<AddStudentView />} />
-        <Route path="/students/edit" element={<EditStudents />} />
+        <Route path="/students/edit/:id" element={<EditStudents />} />
         <Route path="/students/list" element={<StudentList />} />
 
         {/* Preliminary Interview */}
