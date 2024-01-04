@@ -73,30 +73,27 @@ const EditStudents = () => {
 
   const [value, setValue] = useState(0);
   const [expanded, setExpanded] = useState<string | false>("panel1");
-  const [studentInfos, setStudentInfos] = useState<IStudents.ICreateStudent>(
-    initialStudentInfos
-  );
-
+  const [studentInfos, setStudentInfos] =
+    useState<IStudents.ICreateStudent>(initialStudentInfos);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handleAccordion = (panel: string) => (
-    event: React.SyntheticEvent,
-    isExpanded: boolean
-  ) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const handleAccordion =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   useEffect(() => {
     if (id) {
       KindergartenAPI.GetStudentById(id)
         .then((res) => {
           setStudentInfos(res);
+          setIsLoading(false);
         })
         .catch((err) => {
           console.error("Öğrenci bilgileri getirilirken bir hata oluştu", err);
-          
         });
     }
   }, []);
@@ -108,7 +105,7 @@ const EditStudents = () => {
         title: "Öğrenci güncelleniyor...",
         timer: 15000,
       });
-  
+
       KindergartenAPI.UpdateStudent(id, studentInfos)
         .then((res) => {
           Toast.fire({
@@ -133,77 +130,81 @@ const EditStudents = () => {
       titleName="Öğrenciler"
       header="Öğrenci Tanımlama"
       content={
-        <>
-          <AntTabs value={value} onChange={handleChange}>
-            <AntTab label="Öğrenci Bilgileri" {...a11yProps(0)} />
-            <AntTab label="Ebeveyn Bilgileri" {...a11yProps(1)} />
-            <AntTab label="Diğer Bilgiler" {...a11yProps(2)} />
-          </AntTabs>
-          <TabPanel value={value} index={0}>
-            <StudentInfo
-              studentState={studentInfos}
-              setStudentState={setStudentInfos}
-              setTabValue={setValue}
-            />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Accordion
-              expanded={expanded === "panel1"}
-              onChange={handleAccordion("panel1")}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                Anne Bilgileri
-              </AccordionSummary>
-              <AccordionDetails sx={{ height: "calc(100vh - 340px)" }}>
-                <MotherInfos
-                  studentState={studentInfos}
-                  setStudentState={setStudentInfos}
-                  setTabValue={setValue}
-                  setExpanded={setExpanded}
-                />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel2"}
-              onChange={handleAccordion("panel2")}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                Baba Bilgileri
-              </AccordionSummary>
-              <AccordionDetails sx={{ height: "calc(100vh - 345px)" }}>
-                <FatherInfos
-                  studentState={studentInfos}
-                  setStudentState={setStudentInfos}
-                  setExpanded={setExpanded}
-                />
-              </AccordionDetails>
-            </Accordion>
-            <Accordion
-              expanded={expanded === "panel3"}
-              onChange={handleAccordion("panel3")}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                Vasi Bilgileri
-              </AccordionSummary>
-              <AccordionDetails sx={{ height: "calc(100vh - 340px)" }}>
-                <HeirInfos
-                  studentInfos={studentInfos}
-                  setStudentInfos={setStudentInfos}
-                  setTabValue={setValue}
-                  setExpanded={setExpanded}
-                />
-              </AccordionDetails>
-            </Accordion>
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <OtherInfo
-              studentState={studentInfos}
-              setStudentState={setStudentInfos}
-              setTabValue={setValue}
-              handleSubmit={handleSubmit}
-            />
-          </TabPanel>
-        </>
+        isLoading ? (
+          <div>Yükleniyor...</div>
+        ) : (
+          <>
+            <AntTabs value={value} onChange={handleChange}>
+              <AntTab label="Öğrenci Bilgileri" {...a11yProps(0)} />
+              <AntTab label="Ebeveyn Bilgileri" {...a11yProps(1)} />
+              <AntTab label="Diğer Bilgiler" {...a11yProps(2)} />
+            </AntTabs>
+            <TabPanel value={value} index={0}>
+              <StudentInfo
+                studentState={studentInfos}
+                setStudentState={setStudentInfos}
+                setTabValue={setValue}
+              />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Accordion
+                expanded={expanded === "panel1"}
+                onChange={handleAccordion("panel1")}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  Anne Bilgileri
+                </AccordionSummary>
+                <AccordionDetails sx={{ height: "calc(100vh - 340px)" }}>
+                  <MotherInfos
+                    studentState={studentInfos}
+                    setStudentState={setStudentInfos}
+                    setTabValue={setValue}
+                    setExpanded={setExpanded}
+                  />
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expanded === "panel2"}
+                onChange={handleAccordion("panel2")}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  Baba Bilgileri
+                </AccordionSummary>
+                <AccordionDetails sx={{ height: "calc(100vh - 345px)" }}>
+                  <FatherInfos
+                    studentState={studentInfos}
+                    setStudentState={setStudentInfos}
+                    setExpanded={setExpanded}
+                  />
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expanded === "panel3"}
+                onChange={handleAccordion("panel3")}
+              >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  Vasi Bilgileri
+                </AccordionSummary>
+                <AccordionDetails sx={{ height: "calc(100vh - 340px)" }}>
+                  <HeirInfos
+                    studentInfos={studentInfos}
+                    setStudentInfos={setStudentInfos}
+                    setTabValue={setValue}
+                    setExpanded={setExpanded}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              <OtherInfo
+                studentState={studentInfos}
+                setStudentState={setStudentInfos}
+                setTabValue={setValue}
+                handleSubmit={handleSubmit}
+              />
+            </TabPanel>
+          </>
+        )
       }
     />
   );

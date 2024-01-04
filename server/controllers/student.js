@@ -164,48 +164,48 @@ export const getStudent = async (req, res) => {
     }
     if (!other[0]) {
       other[0] = {
-        studentId:id, 
-      bloodGroup: "",
-      isParentsTogether: "",
-      isAllergy: false,
-      allergyType: "",
-      isChronicDisease: false,
-      chronicDiseaseType: "",
-      emergencyContactFullName: "",
-      emergencyContactPhoneNumber: "",
-      emergencyContactDegreeOfProximity: ""
-      }
+        studentId: id,
+        bloodGroup: "",
+        isParentsTogether: "",
+        isAllergy: false,
+        allergyType: "",
+        isChronicDisease: false,
+        chronicDiseaseType: "",
+        emergencyContactFullName: "",
+        emergencyContactPhoneNumber: "",
+        emergencyContactDegreeOfProximity: "",
+      };
     }
     if (!photo[0]) {
       photo[0] = {
-        studentId:id,
+        studentId: id,
         photo: "",
-      }
-    } 
+      };
+    }
     const studentCopy = {
       identificationNumber: student.identificationNumber,
-    firstName: student.firstName,
-    lastName: student.lastName,
-    birthDate: student.birthDate,
-    birthPlace: student.birthPlace,
-    class: student.class,
-    gender: student.gender,
-    nationality: student.nationality,
-    createdAt:student.createdAt,
-    updatedAt: student.updatedAt,
-    photo: photo[0].photo,
-  }
-    const data ={
-      student:studentCopy,
-      parent:{
-        mother:mother[0],
-        father:father[0],
-        heir:heir[0]
+      firstName: student.firstName,
+      lastName: student.lastName,
+      birthDate: student.birthDate,
+      birthPlace: student.birthPlace,
+      class: student.class,
+      gender: student.gender,
+      nationality: student.nationality,
+      createdAt: student.createdAt,
+      updatedAt: student.updatedAt,
+      photo: photo[0].photo,
+    };
+    const data = {
+      student: studentCopy,
+      parent: {
+        mother: mother[0],
+        father: father[0],
+        heir: heir[0],
       },
-      other:other[0],
-    }
-    
-    res.status(200).json(data)
+      other: other[0],
+    };
+
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong",
