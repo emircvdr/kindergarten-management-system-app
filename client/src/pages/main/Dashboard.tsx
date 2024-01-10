@@ -22,11 +22,9 @@ const ButtonLink = styled.a`
     background-color: #eee;
     border-color: #ccc;
   }
-
 `;
 
 const Dashboard = () => {
-
   const navigate = useNavigate();
 
   return (
@@ -36,9 +34,17 @@ const Dashboard = () => {
       content={
         <>
           <div style={{ display: "flex", gap: "10px" }}>
-            <ButtonLink onClick={(e) => navigate("/preliminary-interview/add")}>Ön Görüşme Kaydı</ButtonLink>
-            <ButtonLink onClick={(e) => navigate("/preliminary-interview/add")}>Kayıt Listeleri</ButtonLink>
-            <ButtonLink onClick={(e) => navigate("/preliminary-interview/add")}>Diğer</ButtonLink>
+            <ButtonLink
+              onClick={(e) => navigate("/preliminary-interview/list")}
+            >
+              Ön Görüşme Kaydı
+            </ButtonLink>
+            <ButtonLink onClick={(e) => navigate("/preliminary-interview/add")}>
+              Kayıt Listeleri
+            </ButtonLink>
+            <ButtonLink onClick={(e) => navigate("/preliminary-interview/add")}>
+              Diğer
+            </ButtonLink>
           </div>
         </>
       }

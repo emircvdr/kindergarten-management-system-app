@@ -8,6 +8,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { KindergartenAPI } from "../../../services/broker";
 import { IStudents } from "../../../interfaces/IStudents";
 import { useParams } from "react-router-dom";
+import { IPreliminaryInterview } from "../../../interfaces/IPreliminaryInterview";
 
 const DataGridContainer = styled.div`
   width: 100%;
@@ -20,27 +21,27 @@ const Edit = styled.div`
   }
 `;
 
-const StudentList = () => {
+const PreliminaryInterviewList = () => {
   const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     {
       field: "firstName",
-      headerName: "Adı",
+      headerName: "Öğrencinin Adı",
       minWidth: 150,
       flex: 1,
       editable: false,
     },
     {
       field: "lastName",
-      headerName: "Soyadı",
+      headerName: "Öğrencinin Soyadı",
       minWidth: 150,
       flex: 1,
       editable: false,
     },
     {
-      field: "birthDate",
-      headerName: "Doğum Tarihi",
+      field: "preinterviewDate",
+      headerName: "Görüşme Tarihi",
       minWidth: 150,
       flex: 1,
       editable: false,
@@ -51,19 +52,15 @@ const StudentList = () => {
       minWidth: 90,
       width: 90,
       renderCell: (params: any) => {
-        return (
-          <Edit onClick={(e) => navigate(`/students/edit/${params.row.id}`)}>
-            Düzenle
-          </Edit>
-        );
+        return <Edit>Düzenle</Edit>;
       },
     },
   ];
 
-  const [rows, setRows] = React.useState<IStudents.IStudent[]>([]);
-  const [selectedRow, setSelectedRow] = React.useState<IStudents.IStudent[]>(
-    []
-  );
+  const [rows, setRows] = React.useState<IPreliminaryInterview.IStudent[]>([]);
+  const [selectedRow, setSelectedRow] = React.useState<
+    IPreliminaryInterview.IStudent[]
+  >([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const handleSearch = (e: any) => {
     const value = e.target.value;
@@ -74,21 +71,17 @@ const StudentList = () => {
   };
 
   React.useEffect(() => {
-    KindergartenAPI.GetStudents().then((res) => {
+    KindergartenAPI.GetInterviews().then((res) => {
       setRows(res.map((item: any) => ({ ...item, id: item._id })));
       setSelectedRow(res.map((item: any) => ({ ...item, id: item._id })));
       setIsLoading(false);
     });
   }, []);
 
-  const handleEdit = (studentId: string) => {
-    navigate(`/students/edit/${studentId}`);
-  };
-
   return (
     <Content
-      titleName="Öğrenciler"
-      header="Öğrenci Listesi"
+      titleName="Ön Görüşme Listesi"
+      header="Ön Görüşme Kayıtları"
       content={
         isLoading ? (
           <div>Loading...</div>
@@ -125,9 +118,9 @@ const StudentList = () => {
                   color="primary"
                   size="small"
                   fullWidth
-                  onClick={() => navigate("/students/add")}
+                  onClick={() => navigate("/preliminary-interview/add")}
                 >
-                  Yeni Öğrenci Ekle
+                  Yeni Ön Görüşme Ekle
                 </Button>
               </div>
             </div>
@@ -154,4 +147,4 @@ const StudentList = () => {
   );
 };
 
-export default StudentList;
+export default PreliminaryInterviewList;
