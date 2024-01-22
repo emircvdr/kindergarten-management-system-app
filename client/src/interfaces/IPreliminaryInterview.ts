@@ -38,6 +38,7 @@ export namespace IPreliminaryInterview {
     _id: string;
     studentId: string;
     paymentMethod: string;
+    paymentAmount: string;
     installmentPayment: string;
     unitinstallmentPayment: string;
     contractAmount: string;
@@ -45,6 +46,7 @@ export namespace IPreliminaryInterview {
   }
   export interface ICreateOther {
     paymentMethod: string;
+    paymentAmount: string;
     installmentPayment: string;
     unitinstallmentPayment: string;
     contractAmount: string;

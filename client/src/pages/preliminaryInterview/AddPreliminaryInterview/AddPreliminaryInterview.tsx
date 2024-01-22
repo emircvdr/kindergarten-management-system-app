@@ -11,7 +11,6 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -20,34 +19,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { trTR } from "@mui/x-date-pickers";
-import styled from "styled-components";
+
 import { KindergartenAPI } from "../../../services/broker";
 import { IPreliminaryInterview } from "../../../interfaces/IPreliminaryInterview";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../../components/Toast/Toast";
-
-const StyledTypography = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledContainer = styled.div`
-  display: "flex",
-flexDirection: "column",
-gap: "20px",
-width: "100%",
-alignItems: "center",
-`;
-
-const StyledButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-`;
 
 //UseStates//
 const AddPreliminaryInterview = () => {
@@ -72,6 +48,7 @@ const AddPreliminaryInterview = () => {
     });
   const [other, setOther] = React.useState<IPreliminaryInterview.ICreateOther>({
     paymentMethod: "",
+    paymentAmount: "",
     installmentPayment: "",
     unitinstallmentPayment: "",
     contractAmount: "",
@@ -104,6 +81,23 @@ const AddPreliminaryInterview = () => {
     });
   };
 
+  const handleChangePaymentMethod = (event: any) => {
+    const value = event.target.value;
+    setOther({
+      ...other,
+      paymentMethod: value,
+      ...(value === "installment-payment" &&
+        (other.installmentPayment === "" ||
+          other.unitinstallmentPayment === "" ||
+          other.paymentAmount === "") && {
+          contractAmount: "Lütfen Taksit Bilgilerini Giriniz",
+        }),
+    });
+  };
+
+  //unitinstallmentPayment
+  //paymentAmount
+  //installmentPayment
   const handleSubmit = () => {
     KindergartenAPI.CreateInterview({
       student: student,
@@ -455,37 +449,85 @@ const AddPreliminaryInterview = () => {
                     <InputLabel>Ödeme Tipi</InputLabel>
                     <Select
                       label="Ödeme Tipi"
+                      value={other.paymentMethod}
                       size="small"
                       required
-                      onChange={(e: any) => {
-                        setOther({
-                          ...other,
-                          paymentMethod: e.target.value.toString(),
-                        });
-                      }}
+                      onChange={handleChangePaymentMethod}
                     >
                       <MenuItem value="cash">Nakit</MenuItem>
                       <MenuItem value="installment-payment">Taksitli</MenuItem>
                     </Select>
                   </FormControl>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    label="Taksit Sayısı"
-                    variant="outlined"
-                    name="installmentPayment"
-                    onChange={handleChangeOther}
-                    value={other.installmentPayment}
-                  />
-                  <TextField
-                    fullWidth
-                    size="small"
-                    label="Birim Taksit Tutarı"
-                    variant="outlined"
-                    name="unitinstallmentPayment"
-                    onChange={handleChangeOther}
-                    value={other.unitinstallmentPayment}
-                  />
+                  {other.paymentMethod === "installment-payment" && (
+                    <>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Peşinat Tutarı"
+                        variant="outlined"
+                        name="paymentAmount"
+                        onChange={(event) => {
+                          setOther({
+                            ...other,
+                            paymentAmount: event.target.value,
+                            ...(other.unitinstallmentPayment !== "" &&
+                              other.installmentPayment !== "" && {
+                                contractAmount: String(
+                                  parseInt(event.target.value) +
+                                    parseInt(other.unitinstallmentPayment) *
+                                      parseInt(other.installmentPayment)
+                                ),
+                              }),
+                          });
+                        }}
+                        value={other.paymentAmount}
+                      />
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Taksit Sayısı"
+                        variant="outlined"
+                        name="installmentPayment"
+                        onChange={(event) => {
+                          setOther({
+                            ...other,
+                            installmentPayment: event.target.value,
+                            ...(other.unitinstallmentPayment !== "" &&
+                              other.paymentAmount !== "" && {
+                                contractAmount: String(
+                                  parseInt(event.target.value) *
+                                    parseInt(other.unitinstallmentPayment) +
+                                    parseInt(other.paymentAmount)
+                                ),
+                              }),
+                          });
+                        }}
+                        value={other.installmentPayment}
+                      />
+                      <TextField
+                        fullWidth
+                        size="small"
+                        label="Birim Taksit Tutarı"
+                        variant="outlined"
+                        name="unitinstallmentPayment"
+                        onChange={(event) => {
+                          setOther({
+                            ...other,
+                            unitinstallmentPayment: event.target.value,
+                            ...(other.paymentAmount !== "" &&
+                              other.installmentPayment !== "" && {
+                                contractAmount: String(
+                                  parseInt(event.target.value) *
+                                    parseInt(other.installmentPayment) +
+                                    parseInt(other.paymentAmount)
+                                ),
+                              }),
+                          });
+                        }}
+                        value={other.unitinstallmentPayment}
+                      />
+                    </>
+                  )}
                   <TextField
                     fullWidth
                     size="small"
@@ -494,7 +536,9 @@ const AddPreliminaryInterview = () => {
                     name="contractAmount"
                     onChange={handleChangeOther}
                     value={other.contractAmount}
+                    disabled={other.paymentMethod === "installment-payment"}
                   />
+
                   <TextField
                     fullWidth
                     size="small"

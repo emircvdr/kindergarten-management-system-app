@@ -28,6 +28,7 @@ export const createPreliminaryInterview = async (req, res) => {
     });
     const newInterviewOther = new PreliminaryInterviewOther({
       studentId: newInterviewStudent._id,
+      paymentAmount: other.paymentAmount,
       paymentMethod: other.paymentMethod,
       installmentPayment: other.installmentPayment,
       unitinstallmentPayment: other.unitinstallmentPayment,
