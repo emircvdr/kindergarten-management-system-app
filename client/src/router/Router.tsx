@@ -7,11 +7,16 @@ import EditStudents from "../pages/students/EditStudent/EditStudent";
 import StudentList from "../pages/students/StudentList/StudentList";
 import AddPreliminaryInterview from "../pages/preliminaryInterview/AddPreliminaryInterview/AddPreliminaryInterview";
 import PreliminaryInterviewList from "../pages/preliminaryInterview/PreliminaryInterviewList/PreliminaryInterviewList";
+import Register from "../pages/auth/Register";
+import Login from "../pages/auth/Login";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         {/* Dashboard */}
         <Route path="/" element={<Dashboard />} />
 

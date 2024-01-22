@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import studentRoutes from "./routes/student.js";
 import preliminaryInterviewRoutes from "./routes/preliminaryInterview.js";
+import auth from "./routes/auth.js";
 
 const app = express();
 dotenv.config();
@@ -22,7 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/student", studentRoutes);
 app.use("/preliminaryInterview", preliminaryInterviewRoutes);
-
+app.use("/auth", auth);
 const PORT = process.env.PORT || 5000;
 
 mongoose
