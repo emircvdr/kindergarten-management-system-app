@@ -7,7 +7,6 @@ import styled from "styled-components";
 import { GridColDef } from "@mui/x-data-grid";
 import { KindergartenAPI } from "../../../services/broker";
 import { IStudents } from "../../../interfaces/IStudents";
-import { useParams } from "react-router-dom";
 
 const DataGridContainer = styled.div`
   width: 100%;
@@ -81,9 +80,9 @@ const StudentList = () => {
     });
   }, []);
 
-  const handleEdit = (studentId: string) => {
-    navigate(`/students/edit/${studentId}`);
-  };
+  // const handleEdit = (studentId: string) => {
+  //   navigate(`/students/edit/${studentId}`);
+  // };
 
   return (
     <Content

@@ -9,6 +9,8 @@ import AddPreliminaryInterview from "../pages/preliminaryInterview/AddPreliminar
 import PreliminaryInterviewList from "../pages/preliminaryInterview/PreliminaryInterviewList/PreliminaryInterviewList";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
+import Schedule from "../pages/schedule/Schedule";
+// import Schedule from "../pages/schedule/Schedule";
 
 const Router = () => {
   return (
@@ -34,6 +36,8 @@ const Router = () => {
           path="/preliminary-interview/list"
           element={<PreliminaryInterviewList />}
         />
+        {/* Schedule */}
+        <Route path="/schedule/list" element={<Schedule />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />
