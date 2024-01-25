@@ -6,7 +6,7 @@ export class KindergartenAPI {
   // auth API --start
   public static async Login(login: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      ConfigApi.LibraryApi()
+      ConfigApi.AccountSystemApi()
         .post("auth/login", login)
         .then((response) => {
           resolve(response.data);
@@ -19,7 +19,7 @@ export class KindergartenAPI {
 
   public static async Register(register: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      ConfigApi.LibraryApi()
+      ConfigApi.AccountSystemApi()
         .post("auth/register", register)
         .then((response) => {
           resolve(response.data);
@@ -32,7 +32,7 @@ export class KindergartenAPI {
 
   public static async RefreshToken(token: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      ConfigApi.LibraryApi()
+      ConfigApi.AccountSystemApi()
         .post("auth/refresh-token", { refreshToken: token })
         .then((response) => {
           resolve(response.data);
