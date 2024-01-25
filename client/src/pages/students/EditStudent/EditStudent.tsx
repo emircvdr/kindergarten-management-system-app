@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MotherInfos from "../EditStudent/views/MotherInfos";
@@ -14,17 +14,12 @@ import {
   TabPanel,
   a11yProps,
 } from "../../../components/Tabs/Tabs";
-import { TextField, Button } from "@mui/material";
+
 import { useNavigate, useParams } from "react-router-dom";
-import StyledDataGrid from "../../../components/StyledDataGrid/StyledDataGrid";
+
 import Toast from "../../../components/Toast/Toast";
 import { KindergartenAPI } from "../../../services/broker";
 import { IStudents } from "../../../interfaces/IStudents";
-
-const DataGridContainer = styled.div`
-  width: 100%;
-  height: calc(100vh - 340px);
-`;
 
 const EditStudents = () => {
   const navigate = useNavigate();

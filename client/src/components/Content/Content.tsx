@@ -39,7 +39,7 @@ const Content = ({
         </div>
         <div
           style={{
-            padding: "10px 15px"
+            padding: "10px 15px",
           }}
         >
           {content}

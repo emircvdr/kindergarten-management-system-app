@@ -3,7 +3,48 @@ import { IPreliminaryInterview } from "../interfaces/IPreliminaryInterview";
 import { ConfigApi } from "./configService";
 
 export class KindergartenAPI {
-  // PARTS API
+  // auth API --start
+  public static async Login(login: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      ConfigApi.AccountSystemApi()
+        .post("auth/login", login)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  public static async Register(register: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      ConfigApi.AccountSystemApi()
+        .post("auth/register", register)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  public static async RefreshToken(token: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      ConfigApi.AccountSystemApi()
+        .post("auth/refresh-token", { refreshToken: token })
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  //--end
+
   public static async CreateStudent(
     student: IStudents.ICreateStudent
   ): Promise<any> {

@@ -6,8 +6,6 @@ import StyledDataGrid from "../../../components/StyledDataGrid/StyledDataGrid";
 import styled from "styled-components";
 import { GridColDef } from "@mui/x-data-grid";
 import { KindergartenAPI } from "../../../services/broker";
-import { IStudents } from "../../../interfaces/IStudents";
-import { useParams } from "react-router-dom";
 import { IPreliminaryInterview } from "../../../interfaces/IPreliminaryInterview";
 
 const DataGridContainer = styled.div`

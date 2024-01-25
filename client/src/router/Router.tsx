@@ -7,11 +7,18 @@ import EditStudents from "../pages/students/EditStudent/EditStudent";
 import StudentList from "../pages/students/StudentList/StudentList";
 import AddPreliminaryInterview from "../pages/preliminaryInterview/AddPreliminaryInterview/AddPreliminaryInterview";
 import PreliminaryInterviewList from "../pages/preliminaryInterview/PreliminaryInterviewList/PreliminaryInterviewList";
+import Register from "../pages/auth/Register";
+import Login from "../pages/auth/Login";
+import Schedule from "../pages/schedule/Schedule";
+// import Schedule from "../pages/schedule/Schedule";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth */}
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         {/* Dashboard */}
         <Route path="/" element={<Dashboard />} />
 
@@ -29,6 +36,8 @@ const Router = () => {
           path="/preliminary-interview/list"
           element={<PreliminaryInterviewList />}
         />
+        {/* Schedule */}
+        <Route path="/schedule/list" element={<Schedule />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />

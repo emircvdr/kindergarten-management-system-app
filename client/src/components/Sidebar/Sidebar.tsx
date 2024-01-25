@@ -7,6 +7,8 @@ import { RiParentLine } from "react-icons/ri";
 import { PiChalkboardTeacher } from "react-icons/pi";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { MdDashboard, MdOutlineClass } from "react-icons/md";
+import { AiOutlineSchedule } from "react-icons/ai";
+
 import { useNavigate } from "react-router-dom";
 
 //// Start point Styled Components ////
@@ -51,10 +53,12 @@ const MenuItem = styled.div<{ active: boolean }>`
   font-size: 16px;
   font-weight: 500;
   color: ${(props) => (props.active ? "white" : "rgb(9 70 200 / 95%)")};
-  background: ${(props) => (props.active ? "rgb(9 70 200 / 84%)" : "transparent")};
+  background: ${(props) =>
+    props.active ? "rgb(9 70 200 / 84%)" : "transparent"};
   cursor: pointer;
   &:hover {
-    background: ${(props) => (props.active ? "rgb(9 70 200 / 70%)" : "#e0e0e0")};
+    background: ${(props) =>
+      props.active ? "rgb(9 70 200 / 70%)" : "#e0e0e0"};
   }
 `;
 //// End point Styled Components ////
@@ -66,7 +70,6 @@ interface IMenuItem {
 }
 
 const SideBar = ({ titleName }: { titleName: string }) => {
-
   const menuItems: IMenuItem[] = [
     {
       icon: <MdDashboard size={25} />,
@@ -94,6 +97,11 @@ const SideBar = ({ titleName }: { titleName: string }) => {
       path: "/staffs/list",
     },
     {
+      icon: <AiOutlineSchedule size={25} />,
+      title: "Ders Programı",
+      path: "/schedule/list",
+    },
+    {
       icon: <MdOutlineClass size={25} />,
       title: "Sınıflar",
       path: "/classes/list",
@@ -110,7 +118,11 @@ const SideBar = ({ titleName }: { titleName: string }) => {
       </SideBarHeader>
       <SideBarMenu>
         {menuItems.map((item, index) => (
-          <MenuItem key={index} active={titleName === item.title} onClick={(e) => navigate(item.path)}>
+          <MenuItem
+            key={index}
+            active={titleName === item.title}
+            onClick={(e) => navigate(item.path)}
+          >
             {item.icon}
             {item.title}
           </MenuItem>

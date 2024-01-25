@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Content from "../../components/Content/Content";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { decodeJwt } from "jose";
+import Cookies from "js-cookie";
+import { KindergartenAPI } from "../../services/broker";
 
 const ButtonLink = styled.a`
   cursor: pointer;
@@ -26,6 +29,35 @@ const ButtonLink = styled.a`
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const refreshToken = Cookies.get("refreshToken");
+    if (!refreshToken) {
+      Cookies.remove("token");
+      navigate("/login");
+    }
+    if (!token || !decodeJwt(token)) {
+      const refreshToken = Cookies.get("refreshToken");
+      if (refreshToken) {
+        KindergartenAPI.RefreshToken(refreshToken).then((data) => {
+          const token = decodeJwt(data?.token);
+          const refreshToken = decodeJwt(data?.refreshToken);
+          if (!token || !refreshToken) {
+            navigate("/login");
+            return;
+          }
+          Cookies.set("token", data.token, {
+            expires: new Date(Number(token?.exp) * 1000),
+          });
+          Cookies.set("refreshToken", data.refreshToken, {
+            expires: new Date(Number(refreshToken?.exp) * 1000),
+          });
+        });
+      } else {
+        navigate("/login");
+      }
+    }
+  }, []);
 
   return (
     <Content
