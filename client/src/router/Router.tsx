@@ -11,6 +11,9 @@ import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import Schedule from "../pages/schedule/Schedule";
 import Paramaters from "../pages/parameters/Paramaters";
+import AddClassView from "../pages/classes/AddClass/AddClassView";
+import AddTeacherView from "../pages/teachers/AddTeacherView";
+import AddEmployeeView from "../pages/employees/AddEmployee/AddEmployeeView";
 // import Schedule from "../pages/schedule/Schedule";
 
 const Router = () => {
@@ -42,6 +45,17 @@ const Router = () => {
 
         {/*Parameters*/}
         <Route path="/parameters" element={<Paramaters />} />
+
+         {/* Classes */}
+         <Route path="/class/add" element={<AddClassView />} />
+
+
+{/* Teachers */}
+<Route path="/teacher/add" element={<AddTeacherView />} />
+
+{/* Employees */}
+<Route path="/employee/add" element={<AddEmployeeView />} />
+
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />
