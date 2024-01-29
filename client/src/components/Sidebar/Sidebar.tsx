@@ -8,6 +8,7 @@ import { PiChalkboardTeacher } from "react-icons/pi";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { MdDashboard, MdOutlineClass } from "react-icons/md";
 import { AiOutlineSchedule } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
 
 import { useNavigate } from "react-router-dom";
 
@@ -105,6 +106,11 @@ const SideBar = ({ titleName }: { titleName: string }) => {
       icon: <MdOutlineClass size={25} />,
       title: "Sınıflar",
       path: "/classes/list",
+    },
+    {
+      icon: <IoSettingsOutline size={25} />,
+      title: "Parametreler",
+      path: "/parameters",
     },
   ];
 
