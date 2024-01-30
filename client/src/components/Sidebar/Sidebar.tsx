@@ -90,22 +90,22 @@ const SideBar = ({ titleName }: { titleName: string }) => {
     {
       icon: <PiChalkboardTeacher size={25} />,
       title: "Öğretmenler",
-      path: "/teachers/list",
+      path: "/teacher/add",
     },
     {
       icon: <BsFillPersonLinesFill size={25} />,
       title: "Personeller",
-      path: "/staffs/list",
+      path: "/employee/add",
+    },
+    {
+      icon: <MdOutlineClass size={25} />,
+      title: "Sınıflar",
+      path: "/class/add",
     },
     {
       icon: <AiOutlineSchedule size={25} />,
       title: "Ders Programı",
       path: "/schedule/list",
-    },
-    {
-      icon: <MdOutlineClass size={25} />,
-      title: "Sınıflar",
-      path: "/classes/list",
     },
     {
       icon: <IoSettingsOutline size={25} />,
