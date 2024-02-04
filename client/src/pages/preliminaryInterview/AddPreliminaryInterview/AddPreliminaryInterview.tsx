@@ -99,6 +99,11 @@ const AddPreliminaryInterview = () => {
   //paymentAmount
   //installmentPayment
   const handleSubmit = () => {
+    Toast.fire({
+      icon: "info",
+      title: "Ön Görüşme Kaydı Ekleniyor...",
+      timer: 15000,
+    });
     KindergartenAPI.CreateInterview({
       student: student,
       parent: parentInfo,

@@ -132,7 +132,6 @@ const EditTeacherView = () => {
         title: "Öğretmen güncelleniyor...",
         timer: 15000,
       });
-
       KindergartenAPI.UpdateTeacher(id, teacher)
         .then((res) => {
           Toast.fire({

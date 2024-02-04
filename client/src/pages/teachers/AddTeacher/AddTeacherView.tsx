@@ -71,6 +71,11 @@ const AddTeacherView = () => {
   };
 
   const handleSubmit = () => {
+    Toast.fire({
+      icon: "info",
+      title: "Öğretmen Ekleniyor",
+      timer: 15000,
+    });
     KindergartenAPI.CreateTeacher({
       fullName: teacher.fullName,
       gender: teacher.gender,

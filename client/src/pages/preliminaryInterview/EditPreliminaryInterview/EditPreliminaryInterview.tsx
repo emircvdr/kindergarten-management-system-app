@@ -121,6 +121,7 @@ const EditPreliminaryInterview = () => {
             Toast.fire({
               icon: "success",
               title: "Ön Görüşme başarıyla silindi.",
+              timer: 15000,
             });
             navigate("/preliminary-interview/list");
           })

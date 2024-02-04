@@ -100,6 +100,7 @@ const EditClassView = () => {
             Toast.fire({
               icon: "success",
               title: "Sınıf başarıyla silindi.",
+              timer: 15000,
             });
             navigate("/class/list");
           })

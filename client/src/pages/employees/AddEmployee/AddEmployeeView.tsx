@@ -70,26 +70,25 @@ const AddEmployeeView = () => {
   };
 
   const handleSubmit = () => {
-    KindergartenAPI.CreateEmployee({
-      fullName: employee.fullName,
-      gender: employee.gender,
-      dutyGroup: employee.dutyGroup,
-      birthDate: employee.birthDate,
-      phoneNumber: employee.phoneNumber,
-    })
+    Toast.fire({
+      icon: "info",
+      title: "Personel ekleniyor...",
+      timer: 15000,
+    });
+    KindergartenAPI.CreateEmployee(employee)
       .then((res) => {
         Toast.fire({
           icon: "success",
-          title: "Personel Başarıyla eklendi",
+          title: "Personel Başarıyla Eklendi",
         });
+        navigate("/employee/list");
       })
       .catch((err) => {
         Toast.fire({
           icon: "error",
-          title: "Personel Eklenirken Hata Oluştu",
+          title: "Personel Eklenirken Bir Hata Oluştu",
         });
       });
-    navigate("/employee/list");
   };
 
   return (

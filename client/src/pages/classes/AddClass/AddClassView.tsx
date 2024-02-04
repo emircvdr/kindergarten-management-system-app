@@ -65,6 +65,11 @@ const AddClassView = () => {
   };
 
   const handleSubmit = () => {
+    Toast.fire({
+      icon: "info",
+      title: "Sınıf Ekleniyor...",
+      timer: 15000,
+    });
     KindergartenAPI.CreateClass(formData)
       .then((res) => {
         Toast.fire({

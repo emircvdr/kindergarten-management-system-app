@@ -100,6 +100,7 @@ const EditEmployeeView = () => {
             Toast.fire({
               icon: "success",
               title: "Personel kaydı başarıyla silindi.",
+              timer: 15000,
             });
             navigate("/employee/list");
           })
