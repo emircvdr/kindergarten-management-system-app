@@ -88,6 +88,7 @@ const AddTeacherView = () => {
           icon: "success",
           title: "Öğretmen Başarıyla Eklendi",
         });
+        navigate("/teacher/list");
       })
       .catch((err) => {
         Toast.fire({
@@ -95,7 +96,6 @@ const AddTeacherView = () => {
           title: "Öğretmen Eklenirken Bir Hata Oluştu",
         });
       });
-    navigate("/teacher/list");
   };
 
   return (

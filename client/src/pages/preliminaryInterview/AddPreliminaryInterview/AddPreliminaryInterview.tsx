@@ -114,6 +114,7 @@ const AddPreliminaryInterview = () => {
           icon: "success",
           title: "Ön Görüşme Kaydı Başarıyla Eklendi",
         });
+        navigate("/preliminary-interview/list");
       })
       .catch((err) => {
         Toast.fire({
@@ -121,7 +122,6 @@ const AddPreliminaryInterview = () => {
           title: "Ön Görüşme Kaydı Eklenirken Bir Sorun Oluştu",
         });
       });
-    navigate("/preliminary-interview/list");
   };
 
   return (

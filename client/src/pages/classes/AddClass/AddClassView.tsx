@@ -76,6 +76,7 @@ const AddClassView = () => {
           icon: "success",
           title: "Sınıf Başarıyla Eklendi",
         });
+        navigate("/class/list");
       })
       .catch((err) => {
         Toast.fire({
@@ -83,7 +84,6 @@ const AddClassView = () => {
           title: "Sınıf Eklenirken Bir Hata Oluştu",
         });
       });
-    navigate("/class/list");
   };
   const [teachers, setTeachers] = React.useState<ITeacher.ITeacher[]>([]);
   React.useEffect(() => {
