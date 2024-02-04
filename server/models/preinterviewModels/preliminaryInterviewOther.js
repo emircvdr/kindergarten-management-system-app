@@ -11,6 +11,14 @@ const preliminaryInterviewOtherSchema = new mongoose.Schema({
   unitinstallmentPayment: String,
   contractAmount: String,
   interviewNotes: String,
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const PreliminaryInterviewOther = mongoose.model(

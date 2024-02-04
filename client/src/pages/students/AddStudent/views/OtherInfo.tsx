@@ -5,6 +5,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, FormControl, InputLabel } from "@mui/material";
 import { IStudents } from "../../../../interfaces/IStudents";
+import { IPreliminaryInterview } from "../../../../interfaces/IPreliminaryInterview";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -36,15 +37,14 @@ const StyledTextContainer = styled.div`
   gap: 10px;
 `;
 
-
-
 const StudentInfo = (props: {
-  studentState: IStudents.ICreateStudent;
-  setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
+  studentState: IStudents.ICreateStudentObj;
+  setStudentState: React.Dispatch<
+    React.SetStateAction<IStudents.ICreateStudentObj>
+  >;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
   handleSubmit: () => void;
 }) => {
-
   const emergencyContact = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setStudentState({
       ...props.studentState,
@@ -53,23 +53,50 @@ const StudentInfo = (props: {
         [e.target.name]: e.target.value,
       },
     });
-  }
-
+  };
+  const paymentMethod = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setStudentState({
+      ...props.studentState,
+      other: {
+        ...props.studentState.other,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+  const handleChangePaymentMethod = (event: any) => {
+    const value = event.target.value;
+    props.setStudentState({
+      ...props.studentState,
+      other: {
+        ...props.studentState.other,
+        paymentMethod: value,
+        ...(value === "installment-payment" &&
+          (props.studentState.other.installmentPayment === "" ||
+            props.studentState.other.unitinstallmentPayment === "" ||
+            props.studentState.other.paymentAmount === "") && {
+            contractAmount: "Lütfen Taksit Bilgilerini Giriniz",
+          }),
+      },
+    });
+  };
 
   return (
-    <div style={{
-      display: "flex",
-      width: "100%",
-      justifyContent: "center",
-
-    }}>
-      <div style={{
+    <div
+      style={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "80%",
-        gap: "20px"
-      }}>
+        width: "100%",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "80%",
+          gap: "20px",
+        }}
+      >
         <StyledContainer>
           <StyledContainerLeft>
             <FormControl fullWidth size="small">
@@ -123,15 +150,17 @@ const StudentInfo = (props: {
             </FormControl>
 
             <StyledTextContainer>
-              <div style={{
-                position: "absolute",
-                fontSize: "12px",
-                transform: "translate(10px, -60px)",
-                backgroundColor: "white",
-                padding: "0 5px 0 5px",
-                color: "red",
-                fontWeight: "bold",
-              }}>
+              <div
+                style={{
+                  position: "absolute",
+                  fontSize: "12px",
+                  transform: "translate(10px, -60px)",
+                  backgroundColor: "white",
+                  padding: "0 5px 0 5px",
+                  color: "red",
+                  fontWeight: "bold",
+                }}
+              >
                 Acil Durumda Ulaşılacak Kişi
               </div>
               <TextField
@@ -152,7 +181,9 @@ const StudentInfo = (props: {
                 name="emergencyContactDegreeOfProximity"
                 size="small"
                 label="Yakınlık Derecesi"
-                value={props.studentState.other.emergencyContactDegreeOfProximity}
+                value={
+                  props.studentState.other.emergencyContactDegreeOfProximity
+                }
                 onChange={emergencyContact}
               />
             </StyledTextContainer>
@@ -165,13 +196,13 @@ const StudentInfo = (props: {
                 label="Alerji"
                 size="small"
                 required
-                value={String(props.studentState.other.isAllergy)}
+                value={props.studentState.other.isAllergy ? "true" : "false"}
                 onChange={(e) => {
                   props.setStudentState({
                     ...props.studentState,
                     other: {
                       ...props.studentState.other,
-                      isAllergy: Boolean(e.target.value),
+                      isAllergy: e.target.value === "true" ? true : false,
                     },
                   });
                 }}
@@ -180,7 +211,7 @@ const StudentInfo = (props: {
                 <MenuItem value="false">Hayır</MenuItem>
               </Select>
             </FormControl>
-            {props.studentState.other.isAllergy ?
+            {props.studentState.other.isAllergy ? (
               <TextField
                 rows={4}
                 multiline
@@ -196,8 +227,8 @@ const StudentInfo = (props: {
                     },
                   });
                 }}
-              /> : null
-            }
+              />
+            ) : null}
 
             <FormControl fullWidth size="small">
               <InputLabel>Kronik</InputLabel>
@@ -205,13 +236,16 @@ const StudentInfo = (props: {
                 label="Kronik"
                 size="small"
                 required
-                value={String(props.studentState.other.isChronicDisease)}
+                value={
+                  props.studentState.other.isChronicDisease ? "true" : "false"
+                }
                 onChange={(e) => {
                   props.setStudentState({
                     ...props.studentState,
                     other: {
                       ...props.studentState.other,
-                      isChronicDisease: Boolean(e.target.value),
+                      isChronicDisease:
+                        e.target.value === "true" ? true : false,
                     },
                   });
                 }}
@@ -221,7 +255,7 @@ const StudentInfo = (props: {
               </Select>
             </FormControl>
 
-            {props.studentState.other.isChronicDisease ?
+            {props.studentState.other.isChronicDisease ? (
               <TextField
                 value={props.studentState.other.chronicDiseaseType}
                 onChange={(e) => {
@@ -237,8 +271,139 @@ const StudentInfo = (props: {
                 multiline
                 size="small"
                 label="Kronik Hastalık Detayları"
-              /> : null
-            }
+              />
+            ) : null}
+            <FormControl fullWidth size="small">
+              <InputLabel>Ödeme Tipi</InputLabel>
+              <Select
+                label="Ödeme Tipi"
+                value={props.studentState.other.paymentMethod}
+                size="small"
+                required
+                onChange={handleChangePaymentMethod}
+              >
+                <MenuItem value="cash">Nakit</MenuItem>
+                <MenuItem value="installment-payment">Taksitli</MenuItem>
+              </Select>
+            </FormControl>
+            {props.studentState.other.paymentMethod ===
+              "installment-payment" && (
+              <>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Peşinat Tutarı"
+                  variant="outlined"
+                  name="paymentAmount"
+                  onChange={(event) => {
+                    props.setStudentState({
+                      ...props.studentState,
+                      other: {
+                        ...props.studentState.other,
+                        paymentAmount: event.target.value,
+                        ...(props.studentState.other.installmentPayment !==
+                          "" &&
+                          props.studentState.other.unitinstallmentPayment !==
+                            "" && {
+                            contractAmount: String(
+                              parseInt(event.target.value) +
+                                parseInt(
+                                  props.studentState.other.installmentPayment
+                                ) *
+                                  parseInt(
+                                    props.studentState.other
+                                      .unitinstallmentPayment
+                                  )
+                            ),
+                          }),
+                      },
+                    });
+                  }}
+                  value={props.studentState.other.paymentAmount}
+                />
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Taksit Sayısı"
+                  variant="outlined"
+                  name="installmentPayment"
+                  onChange={(event) => {
+                    props.setStudentState({
+                      ...props.studentState,
+                      other: {
+                        ...props.studentState.other,
+                        installmentPayment: event.target.value,
+                        ...(props.studentState.other.paymentAmount !== "" &&
+                          props.studentState.other.unitinstallmentPayment !==
+                            "" && {
+                            contractAmount: String(
+                              parseInt(event.target.value) *
+                                parseInt(
+                                  props.studentState.other
+                                    .unitinstallmentPayment
+                                ) +
+                                parseInt(props.studentState.other.paymentAmount)
+                            ),
+                          }),
+                      },
+                    });
+                  }}
+                  value={props.studentState.other.installmentPayment}
+                />
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Birim Taksit Tutarı"
+                  variant="outlined"
+                  name="unitinstallmentPayment"
+                  onChange={(event) => {
+                    props.setStudentState({
+                      ...props.studentState,
+                      other: {
+                        ...props.studentState.other,
+                        unitinstallmentPayment: event.target.value,
+                        ...(props.studentState.other.paymentAmount !== "" &&
+                          props.studentState.other.installmentPayment !==
+                            "" && {
+                            contractAmount: String(
+                              parseInt(event.target.value) *
+                                parseInt(
+                                  props.studentState.other.installmentPayment
+                                ) +
+                                parseInt(props.studentState.other.paymentAmount)
+                            ),
+                          }),
+                      },
+                    });
+                  }}
+                  value={props.studentState.other.unitinstallmentPayment}
+                />
+              </>
+            )}
+            <TextField
+              fullWidth
+              size="small"
+              label="Sözleşme Tutarı"
+              variant="outlined"
+              name="contractAmount"
+              onChange={paymentMethod}
+              value={props.studentState.other.contractAmount}
+              disabled={
+                props.studentState.other.paymentMethod === "installment-payment"
+              }
+            />
+
+            <TextField
+              fullWidth
+              size="small"
+              label="Görüşme Notları"
+              variant="outlined"
+              multiline
+              name="interviewNotes"
+              onChange={paymentMethod}
+              value={props.studentState.other.interviewNotes}
+              rows={4}
+            />
           </StyledContainerRight>
         </StyledContainer>
         <div
@@ -251,12 +416,19 @@ const StudentInfo = (props: {
             gap: "10px",
           }}
         >
-          <Button variant="contained" fullWidth size="small" onClick={props.handleSubmit}>KAYDET</Button>
-          <Button variant="contained" color="error" fullWidth size="small">GERİ DÖN</Button>
+          <Button
+            variant="contained"
+            fullWidth
+            size="small"
+            onClick={props.handleSubmit}
+          >
+            KAYDET
+          </Button>
+          <Button variant="contained" color="error" fullWidth size="small">
+            GERİ DÖN
+          </Button>
         </div>
       </div>
-
-
     </div>
   );
 };

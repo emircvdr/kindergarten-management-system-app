@@ -12,8 +12,16 @@ import Login from "../pages/auth/Login";
 import Schedule from "../pages/schedule/Schedule";
 import Paramaters from "../pages/parameters/Paramaters";
 import AddClassView from "../pages/classes/AddClass/AddClassView";
-import AddTeacherView from "../pages/teachers/AddTeacherView";
+import AddTeacherView from "../pages/teachers/AddTeacher/AddTeacherView";
 import AddEmployeeView from "../pages/employees/AddEmployee/AddEmployeeView";
+import EditPreliminaryInterview from "../pages/preliminaryInterview/EditPreliminaryInterview/EditPreliminaryInterview";
+import TeacherList from "../pages/teachers/TeacherList/TeacherList";
+import EditTeacherView from "../pages/teachers/EditTeacher/EditTeacherView";
+import EditClassView from "../pages/classes/EditClass/EditClassView";
+import ClassesList from "../pages/classes/ClassesList/ClassesList";
+import EmployeeList from "../pages/employees/EmployeeList/EmployeeList";
+import EditEmployeeView from "../pages/employees/EditEmployee/EditEmployeeView";
+
 // import Schedule from "../pages/schedule/Schedule";
 
 const Router = () => {
@@ -40,22 +48,30 @@ const Router = () => {
           path="/preliminary-interview/list"
           element={<PreliminaryInterviewList />}
         />
+        <Route
+          path="/preliminary-interview/edit/:id"
+          element={<EditPreliminaryInterview />}
+        />
         {/* Schedule */}
         <Route path="/schedule/list" element={<Schedule />} />
 
         {/*Parameters*/}
         <Route path="/parameters" element={<Paramaters />} />
 
-         {/* Classes */}
-         <Route path="/class/add" element={<AddClassView />} />
+        {/* Classes */}
+        <Route path="/class/add" element={<AddClassView />} />
+        <Route path="/class/edit/:id" element={<EditClassView />} />
+        <Route path="/class/list" element={<ClassesList />} />
 
+        {/* Teachers */}
+        <Route path="/teacher/add" element={<AddTeacherView />} />
+        <Route path="/teacher/list" element={<TeacherList />} />
+        <Route path="/teacher/edit/:id" element={<EditTeacherView />} />
 
-{/* Teachers */}
-<Route path="/teacher/add" element={<AddTeacherView />} />
-
-{/* Employees */}
-<Route path="/employee/add" element={<AddEmployeeView />} />
-
+        {/* Employees */}
+        <Route path="/employee/add" element={<AddEmployeeView />} />
+        <Route path="/employee/list" element={<EmployeeList />} />
+        <Route path="/employee/edit/:id" element={<EditEmployeeView />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFound />} />

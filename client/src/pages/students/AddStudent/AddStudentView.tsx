@@ -5,6 +5,7 @@ import MotherInfos from "./views/MotherInfos";
 import FatherInfos from "./views/FatherInfos";
 import HeirInfos from "./views/HeirInfos";
 import Content from "../../../components/Content/Content";
+
 import {
   AntTab,
   AntTabs,
@@ -18,7 +19,7 @@ import { KindergartenAPI } from "../../../services/broker";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../../components/Toast/Toast";
 
-const initialParentInfos: IStudents.IParent = {
+const initialParentInfos: IStudents.ICreateParent = {
   fullName: "",
   identificationNumber: "",
   phoneNumber: "",
@@ -29,7 +30,7 @@ const initialParentInfos: IStudents.IParent = {
   isParent: false,
 };
 
-const initialStudentInfos: IStudents.ICreateStudent = {
+const initialStudentInfos: IStudents.ICreateStudentObj = {
   student: {
     photo: "",
     identificationNumber: "",
@@ -56,6 +57,12 @@ const initialStudentInfos: IStudents.ICreateStudent = {
     emergencyContactFullName: "",
     emergencyContactPhoneNumber: "",
     emergencyContactDegreeOfProximity: "",
+    paymentMethod: "",
+    paymentAmount: "",
+    installmentPayment: "",
+    unitinstallmentPayment: "",
+    contractAmount: "",
+    interviewNotes: "",
   },
 };
 
@@ -81,7 +88,7 @@ const AddStudentView = () => {
 
   // add student form data -- start
   const [studentInfos, setStudentInfos] =
-    React.useState<IStudents.ICreateStudent>(initialStudentInfos);
+    React.useState<IStudents.ICreateStudentObj>(initialStudentInfos);
   // add student form data -- end
 
   const handleSubmit = () => {

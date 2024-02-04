@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,25 +9,39 @@ import { Button, FormControl, InputLabel } from "@mui/material";
 import { trTR } from "@mui/x-date-pickers";
 import { IStudents } from "../../../../interfaces/IStudents";
 import dayjs from "dayjs";
-import { StyledContainer, StyledContainerLeft, StyledContainerRight, StyledIcon, StyledIconContainer } from "../style";
+import {
+  StyledContainer,
+  StyledContainerLeft,
+  StyledContainerRight,
+  StyledIcon,
+  StyledIconContainer,
+} from "../style";
 import { useNavigate } from "react-router-dom";
 import Base64 from "../../../../components/Base64Select/Base64";
+import cities from "../../../../assets/cities";
+import countries from "../../../../assets/countries";
+import { KindergartenAPI } from "../../../../services/broker";
+import { IClass } from "../../../../interfaces/IClass";
 
 const StudentInfo = (props: {
-  studentState: IStudents.ICreateStudent;
-  setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
+  studentState: IStudents.ICreateStudentObj;
+  setStudentState: React.Dispatch<
+    React.SetStateAction<IStudents.ICreateStudentObj>
+  >;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.name === "identificationNumber") {
+      if (event.target.value.length > 11) return;
+    }
     props.setStudentState({
       ...props.studentState,
       student: {
         ...props.studentState.student,
         [event.target.name]: event.target.value,
-      }
+      },
     });
-  }
+  };
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     props.setStudentState({
@@ -35,9 +49,9 @@ const StudentInfo = (props: {
       student: {
         ...props.studentState.student,
         [event.target.name]: event.target.value,
-      }
+      },
     });
-  }
+  };
 
   const handleFileChange = (e: any) => {
     props.setStudentState({
@@ -45,22 +59,29 @@ const StudentInfo = (props: {
       student: {
         ...props.studentState.student,
         photo: e.base64,
-      }
+      },
     });
   };
+  const [classes, setClasses] = useState<IClass.IClass[]>([]);
+  React.useEffect(() => {
+    KindergartenAPI.GetClasses().then((res) => {
+      setClasses(res);
+    });
+  }, []);
 
   const navigate = useNavigate();
 
-
   return (
     <>
-      <div style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        alignItems: "center",
-      }}>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          alignItems: "center",
+        }}
+      >
         <StyledIconContainer htmlFor="createPersonalPhoto">
           {props.studentState.student.photo ? (
             <img
@@ -113,8 +134,11 @@ const StudentInfo = (props: {
                 size="small"
                 required
               >
-                <MenuItem value="turkish">Türk</MenuItem>
-                <MenuItem value="english">İngiliz</MenuItem>
+                {countries.map((country: any) => (
+                  <MenuItem key={country.id} value={country.id}>
+                    {country.baslik}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </StyledContainerLeft>
@@ -124,7 +148,10 @@ const StudentInfo = (props: {
               <DatePicker
                 slotProps={{ textField: { size: "small", error: false } }}
                 label="Doğum Tarihi"
-                localeText={trTR.components.MuiLocalizationProvider.defaultProps.localeText}
+                localeText={
+                  trTR.components.MuiLocalizationProvider.defaultProps
+                    .localeText
+                }
                 format="DD/MM/YYYY"
                 value={dayjs(props.studentState.student.birthDate)}
                 onChange={(newValue: any) => {
@@ -132,8 +159,8 @@ const StudentInfo = (props: {
                     ...props.studentState,
                     student: {
                       ...props.studentState.student,
-                      birthDate: newValue.$d.toISOString(),
-                    }
+                      birthDate: dayjs(newValue.$d).format("YYYY-MM-DD"),
+                    },
                   });
                 }}
               />
@@ -149,8 +176,17 @@ const StudentInfo = (props: {
                 size="small"
                 required
               >
-                <MenuItem value="Sakarya">Sakarya</MenuItem>
-                <MenuItem value="Kocaeli">Kocaeli</MenuItem>
+                {cities
+                  .filter(
+                    (x) =>
+                      x.ulke_id ===
+                      Number(props.studentState.student.nationality)
+                  )
+                  .map((city: any) => (
+                    <MenuItem key={city.id} value={city.baslik}>
+                      {city.baslik}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
 
@@ -164,8 +200,13 @@ const StudentInfo = (props: {
                 size="small"
                 required
               >
-                <MenuItem value="1-A">1-A</MenuItem>
-                <MenuItem value="1-B">1-B</MenuItem>
+                {classes.map((classes) => {
+                  return (
+                    <MenuItem key={classes._id} value={classes.className}>
+                      {classes.className}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             </FormControl>
 
@@ -194,14 +235,26 @@ const StudentInfo = (props: {
             justifyContent: "center",
             marginTop: "20px",
             gap: "20px",
-            width: "80%"
+            width: "80%",
           }}
         >
-          <Button variant="contained" fullWidth onClick={() => props.setTabValue(1)}>İLERLE</Button>
-          <Button variant="contained" fullWidth color="error" onClick={() => navigate("/students/list")}>GERİ DÖN</Button>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => props.setTabValue(1)}
+          >
+            İLERLE
+          </Button>
+          <Button
+            variant="contained"
+            fullWidth
+            color="error"
+            onClick={() => navigate("/students/list")}
+          >
+            GERİ DÖN
+          </Button>
         </div>
       </div>
-
     </>
   );
 };

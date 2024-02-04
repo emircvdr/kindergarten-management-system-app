@@ -47,6 +47,13 @@ const Register = () => {
       });
       return;
     }
+    if (form.password.length < 6) {
+      Toast.fire({
+        icon: "error",
+        title: "Şifre 6 karakterden az olamaz!",
+      });
+      return;
+    }
 
     KindergartenAPI.Register(form).then((res) => {
       Toast.fire({

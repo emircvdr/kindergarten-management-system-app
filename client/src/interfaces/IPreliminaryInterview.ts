@@ -7,6 +7,8 @@ export namespace IPreliminaryInterview {
     gender: string;
     ageGroup: string;
     preinterviewDate: string;
+    isDeleted: boolean;
+    isActive: boolean;
   }
   export interface ICreateStudent {
     firstName: string;
@@ -25,6 +27,8 @@ export namespace IPreliminaryInterview {
     fatherFullName: string;
     fatherPhoneNumber: string;
     fatherJob: string;
+    isDeleted: boolean;
+    isActive: boolean;
   }
   export interface ICreateParent {
     motherFullName: string;
@@ -43,6 +47,8 @@ export namespace IPreliminaryInterview {
     unitinstallmentPayment: string;
     contractAmount: string;
     interviewNotes: string;
+    isDeleted: boolean;
+    isActive: boolean;
   }
   export interface ICreateOther {
     paymentMethod: string;
@@ -56,5 +62,10 @@ export namespace IPreliminaryInterview {
     student: ICreateStudent;
     parent: ICreateParent;
     other: ICreateOther;
+  }
+  export interface IInterview {
+    student: IStudent;
+    parent: IParent;
+    other: IOther;
   }
 }

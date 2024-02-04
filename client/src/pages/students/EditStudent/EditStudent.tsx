@@ -26,6 +26,8 @@ const EditStudents = () => {
   const { id } = useParams();
 
   const initialParentInfos: IStudents.IParent = {
+    _id: "",
+    studentId: "",
     fullName: "",
     identificationNumber: "",
     phoneNumber: "",
@@ -34,10 +36,13 @@ const EditStudents = () => {
     workAddress: "",
     email: "",
     isParent: false,
+    isDeleted: false,
+    isActive: true,
   };
 
-  const initialStudentInfos: IStudents.ICreateStudent = {
+  const initialStudentInfos: IStudents.IStudentDetails = {
     student: {
+      _id: "",
       photo: "",
       identificationNumber: "",
       firstName: "",
@@ -47,6 +52,8 @@ const EditStudents = () => {
       class: "",
       gender: "",
       nationality: "",
+      isDeleted: false,
+      isActive: true,
     },
     parent: {
       father: initialParentInfos,
@@ -54,6 +61,8 @@ const EditStudents = () => {
       heir: initialParentInfos,
     },
     other: {
+      _id: "",
+      studentId: "",
       bloodGroup: "",
       isParentsTogether: "",
       allergyType: "",
@@ -63,14 +72,23 @@ const EditStudents = () => {
       emergencyContactFullName: "",
       emergencyContactPhoneNumber: "",
       emergencyContactDegreeOfProximity: "",
+      paymentMethod: "",
+      paymentAmount: "",
+      installmentPayment: "",
+      unitinstallmentPayment: "",
+      contractAmount: "",
+      interviewNotes: "",
+      isDeleted: false,
+      isActive: true,
     },
   };
 
   const [value, setValue] = useState(0);
   const [expanded, setExpanded] = useState<string | false>("panel1");
   const [studentInfos, setStudentInfos] =
-    useState<IStudents.ICreateStudent>(initialStudentInfos);
+    useState<IStudents.IStudentDetails>(initialStudentInfos);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isActive, setIsActive] = React.useState<boolean>(true);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -86,6 +104,7 @@ const EditStudents = () => {
         .then((res) => {
           setStudentInfos(res);
           setIsLoading(false);
+          setIsActive(res.student.isActive);
         })
         .catch((err) => {
           console.error("Öğrenci bilgileri getirilirken bir hata oluştu", err);
@@ -196,6 +215,7 @@ const EditStudents = () => {
                 setStudentState={setStudentInfos}
                 setTabValue={setValue}
                 handleSubmit={handleSubmit}
+                isActive={isActive}
               />
             </TabPanel>
           </>

@@ -9,12 +9,13 @@ const ContainerArea = styled.div`
   gap: 120px;
 `;
 const HeirInfos = (props: {
-  studentInfos: IStudents.ICreateStudent;
-  setStudentInfos: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
+  studentInfos: IStudents.ICreateStudentObj;
+  setStudentInfos: React.Dispatch<
+    React.SetStateAction<IStudents.ICreateStudentObj>
+  >;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
   setExpanded: React.Dispatch<React.SetStateAction<string | false>>;
 }) => {
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setStudentInfos({
       ...props.studentInfos,
@@ -23,9 +24,9 @@ const HeirInfos = (props: {
         heir: {
           ...props.studentInfos.parent.heir,
           [event.target.name]: event.target.value,
-        }
-      }
-    })
+        },
+      },
+    });
   };
 
   return (
@@ -127,9 +128,9 @@ const HeirInfos = (props: {
                 heir: {
                   ...props.studentInfos.parent.heir,
                   isParent: !props.studentInfos.parent.heir.isParent,
-                }
-              }
-            })
+                },
+              },
+            });
           }}
         />
         <div
@@ -143,7 +144,8 @@ const HeirInfos = (props: {
             color="error"
             size="small"
             onClick={(e) => props.setExpanded("panel2")}
-            sx={{ height: "max-content" }}>
+            sx={{ height: "max-content" }}
+          >
             Geri
           </Button>
           <Button

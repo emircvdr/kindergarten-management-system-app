@@ -1,12 +1,13 @@
 import React from "react";
 import Content from "../../../components/Content/Content";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import StyledDataGrid from "../../../components/StyledDataGrid/StyledDataGrid";
 import styled from "styled-components";
 import { GridColDef } from "@mui/x-data-grid";
 import { KindergartenAPI } from "../../../services/broker";
 import { IStudents } from "../../../interfaces/IStudents";
+import { IoFilterOutline } from "react-icons/io5";
 
 const DataGridContainer = styled.div`
   width: 100%;
@@ -71,6 +72,7 @@ const StudentList = () => {
     );
     setSelectedRow(search);
   };
+  const [isActive, setIsActive] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     KindergartenAPI.GetStudents().then((res) => {
@@ -79,10 +81,6 @@ const StudentList = () => {
       setIsLoading(false);
     });
   }, []);
-
-  // const handleEdit = (studentId: string) => {
-  //   navigate(`/students/edit/${studentId}`);
-  // };
 
   return (
     <Content
@@ -118,6 +116,20 @@ const StudentList = () => {
                   onChange={handleSearch}
                 />
               </div>
+              <div>
+                <Tooltip
+                  title={
+                    isActive
+                      ? "Pasif Listesini Göster"
+                      : "Aktif Listesini Göster"
+                  }
+                >
+                  <Button
+                    startIcon={<IoFilterOutline />}
+                    onClick={() => setIsActive(!isActive)}
+                  />
+                </Tooltip>
+              </div>
               <div style={{ width: "20%" }}>
                 <Button
                   variant="contained"
@@ -132,7 +144,7 @@ const StudentList = () => {
             </div>
             <DataGridContainer>
               <StyledDataGrid
-                rows={selectedRow}
+                rows={selectedRow.filter((row) => row.isActive === isActive)}
                 columns={columns}
                 initialState={{
                   pagination: {

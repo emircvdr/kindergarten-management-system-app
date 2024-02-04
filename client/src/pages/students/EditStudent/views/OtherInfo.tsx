@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Button, FormControl, InputLabel } from "@mui/material";
 import { IStudents } from "../../../../interfaces/IStudents";
+import Swal from "sweetalert2";
+import { KindergartenAPI } from "../../../../services/broker";
+import Toast from "../../../../components/Toast/Toast";
+import { useNavigate, useParams } from "react-router-dom";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -36,15 +40,15 @@ const StyledTextContainer = styled.div`
   gap: 10px;
 `;
 
-
-
 const StudentInfo = (props: {
-  studentState: IStudents.ICreateStudent;
-  setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
+  studentState: IStudents.IStudentDetails;
+  setStudentState: React.Dispatch<
+    React.SetStateAction<IStudents.IStudentDetails>
+  >;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
   handleSubmit: () => void;
+  isActive: boolean;
 }) => {
-
   const emergencyContact = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setStudentState({
       ...props.studentState,
@@ -53,23 +57,85 @@ const StudentInfo = (props: {
         [e.target.name]: e.target.value,
       },
     });
-  }
+  };
 
+  const paymentMethod = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setStudentState({
+      ...props.studentState,
+      other: {
+        ...props.studentState.other,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  const handleChangePaymentMethod = (event: any) => {
+    const value = event.target.value;
+    props.setStudentState({
+      ...props.studentState,
+      other: {
+        ...props.studentState.other,
+        paymentMethod: value,
+        ...(value === "installment-payment" &&
+          (props.studentState.other.installmentPayment === "" ||
+            props.studentState.other.unitinstallmentPayment === "" ||
+            props.studentState.other.paymentAmount === "") && {
+            contractAmount: "Lütfen Taksit Bilgilerini Giriniz",
+          }),
+      },
+    });
+  };
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Emin misiniz?",
+      text: "Öğrenci Silinecek!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Evet",
+      cancelButtonText: "Hayır",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (!id) return;
+        KindergartenAPI.DeleteStudent(id)
+          .then((res) => {
+            Toast.fire({
+              icon: "success",
+              title: "Öğrenci Başarıyla Silindi.",
+            });
+            navigate("/students/list");
+          })
+          .catch((err) => {
+            Toast.fire({
+              icon: "error",
+              title: "Öğrenci silinirken bir hata oluştu.",
+            });
+            console.error("Öğrenci silinirken bir hata oluştu", err);
+          });
+      }
+    });
+  };
 
   return (
-    <div style={{
-      display: "flex",
-      width: "100%",
-      justifyContent: "center",
-
-    }}>
-      <div style={{
+    <div
+      style={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "80%",
-        gap: "20px"
-      }}>
+        width: "100%",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "80%",
+          gap: "20px",
+        }}
+      >
         <StyledContainer>
           <StyledContainerLeft>
             <FormControl fullWidth size="small">
@@ -123,15 +189,17 @@ const StudentInfo = (props: {
             </FormControl>
 
             <StyledTextContainer>
-              <div style={{
-                position: "absolute",
-                fontSize: "12px",
-                transform: "translate(10px, -60px)",
-                backgroundColor: "white",
-                padding: "0 5px 0 5px",
-                color: "red",
-                fontWeight: "bold",
-              }}>
+              <div
+                style={{
+                  position: "absolute",
+                  fontSize: "12px",
+                  transform: "translate(10px, -60px)",
+                  backgroundColor: "white",
+                  padding: "0 5px 0 5px",
+                  color: "red",
+                  fontWeight: "bold",
+                }}
+              >
                 Acil Durumda Ulaşılacak Kişi
               </div>
               <TextField
@@ -152,7 +220,9 @@ const StudentInfo = (props: {
                 name="emergencyContactDegreeOfProximity"
                 size="small"
                 label="Yakınlık Derecesi"
-                value={props.studentState.other.emergencyContactDegreeOfProximity}
+                value={
+                  props.studentState.other.emergencyContactDegreeOfProximity
+                }
                 onChange={emergencyContact}
               />
             </StyledTextContainer>
@@ -180,7 +250,7 @@ const StudentInfo = (props: {
                 <MenuItem value="false">Hayır</MenuItem>
               </Select>
             </FormControl>
-            {props.studentState.other.isAllergy ?
+            {props.studentState.other.isAllergy ? (
               <TextField
                 rows={4}
                 multiline
@@ -196,8 +266,8 @@ const StudentInfo = (props: {
                     },
                   });
                 }}
-              /> : null
-            }
+              />
+            ) : null}
 
             <FormControl fullWidth size="small">
               <InputLabel>Kronik</InputLabel>
@@ -221,7 +291,7 @@ const StudentInfo = (props: {
               </Select>
             </FormControl>
 
-            {props.studentState.other.isChronicDisease ?
+            {props.studentState.other.isChronicDisease ? (
               <TextField
                 value={props.studentState.other.chronicDiseaseType}
                 onChange={(e) => {
@@ -237,8 +307,139 @@ const StudentInfo = (props: {
                 multiline
                 size="small"
                 label="Kronik Hastalık Detayları"
-              /> : null
-            }
+              />
+            ) : null}
+            <FormControl fullWidth size="small">
+              <InputLabel>Ödeme Tipi</InputLabel>
+              <Select
+                label="Ödeme Tipi"
+                value={props.studentState.other.paymentMethod}
+                size="small"
+                required
+                onChange={handleChangePaymentMethod}
+              >
+                <MenuItem value="cash">Nakit</MenuItem>
+                <MenuItem value="installment-payment">Taksitli</MenuItem>
+              </Select>
+            </FormControl>
+            {props.studentState.other.paymentMethod ===
+              "installment-payment" && (
+              <>
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Peşinat Tutarı"
+                  variant="outlined"
+                  name="paymentAmount"
+                  onChange={(event) => {
+                    props.setStudentState({
+                      ...props.studentState,
+                      other: {
+                        ...props.studentState.other,
+                        paymentAmount: event.target.value,
+                        ...(props.studentState.other.installmentPayment !==
+                          "" &&
+                          props.studentState.other.unitinstallmentPayment !==
+                            "" && {
+                            contractAmount: String(
+                              parseInt(event.target.value) +
+                                parseInt(
+                                  props.studentState.other.installmentPayment
+                                ) *
+                                  parseInt(
+                                    props.studentState.other
+                                      .unitinstallmentPayment
+                                  )
+                            ),
+                          }),
+                      },
+                    });
+                  }}
+                  value={props.studentState.other.paymentAmount}
+                />
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Taksit Sayısı"
+                  variant="outlined"
+                  name="installmentPayment"
+                  onChange={(event) => {
+                    props.setStudentState({
+                      ...props.studentState,
+                      other: {
+                        ...props.studentState.other,
+                        installmentPayment: event.target.value,
+                        ...(props.studentState.other.paymentAmount !== "" &&
+                          props.studentState.other.unitinstallmentPayment !==
+                            "" && {
+                            contractAmount: String(
+                              parseInt(event.target.value) *
+                                parseInt(
+                                  props.studentState.other
+                                    .unitinstallmentPayment
+                                ) +
+                                parseInt(props.studentState.other.paymentAmount)
+                            ),
+                          }),
+                      },
+                    });
+                  }}
+                  value={props.studentState.other.installmentPayment}
+                />
+                <TextField
+                  fullWidth
+                  size="small"
+                  label="Birim Taksit Tutarı"
+                  variant="outlined"
+                  name="unitinstallmentPayment"
+                  onChange={(event) => {
+                    props.setStudentState({
+                      ...props.studentState,
+                      other: {
+                        ...props.studentState.other,
+                        unitinstallmentPayment: event.target.value,
+                        ...(props.studentState.other.paymentAmount !== "" &&
+                          props.studentState.other.installmentPayment !==
+                            "" && {
+                            contractAmount: String(
+                              parseInt(event.target.value) *
+                                parseInt(
+                                  props.studentState.other.installmentPayment
+                                ) +
+                                parseInt(props.studentState.other.paymentAmount)
+                            ),
+                          }),
+                      },
+                    });
+                  }}
+                  value={props.studentState.other.unitinstallmentPayment}
+                />
+              </>
+            )}
+            <TextField
+              fullWidth
+              size="small"
+              label="Sözleşme Tutarı"
+              variant="outlined"
+              name="contractAmount"
+              onChange={paymentMethod}
+              value={props.studentState.other.contractAmount}
+              disabled={
+                props.studentState.other.paymentMethod === "installment-payment"
+              }
+            />
+
+            <TextField
+              fullWidth
+              size="small"
+              label="Görüşme Notları"
+              variant="outlined"
+              multiline
+              name="interviewNotes"
+              onChange={paymentMethod}
+              value={props.studentState.other.interviewNotes}
+              rows={4}
+            />
           </StyledContainerRight>
         </StyledContainer>
         <div
@@ -251,12 +452,30 @@ const StudentInfo = (props: {
             gap: "10px",
           }}
         >
-          <Button variant="contained" fullWidth size="small" onClick={props.handleSubmit}>KAYDET</Button>
-          <Button variant="contained" color="error" fullWidth size="small">GERİ DÖN</Button>
+          <Button
+            variant="contained"
+            fullWidth
+            size="small"
+            onClick={props.handleSubmit}
+          >
+            KAYDET
+          </Button>
+          {!props.isActive && (
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={handleDelete}
+              size="small"
+              fullWidth
+            >
+              Sil
+            </Button>
+          )}
+          <Button variant="contained" color="error" fullWidth size="small">
+            GERİ DÖN
+          </Button>
         </div>
       </div>
-
-
     </div>
   );
 };

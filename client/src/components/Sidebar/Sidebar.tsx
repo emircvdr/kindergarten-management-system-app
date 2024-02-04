@@ -9,8 +9,9 @@ import { BsFillPersonLinesFill } from "react-icons/bs";
 import { MdDashboard, MdOutlineClass } from "react-icons/md";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
-
+import { MdOutlineLogin } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 //// Start point Styled Components ////
 const SideBarContainer = styled.div`
@@ -82,31 +83,32 @@ const SideBar = ({ titleName }: { titleName: string }) => {
       title: "Öğrenciler",
       path: "/students/list",
     },
-    {
-      icon: <RiParentLine size={25} />,
-      title: "Veliler",
-      path: "/parents/list",
-    },
+    // {
+    //   icon: <RiParentLine size={25} />,
+    //   title: "Veliler",
+    //   path: "/parents/list",
+    // },
     {
       icon: <PiChalkboardTeacher size={25} />,
-      title: "Öğretmenler",
-      path: "/teacher/add",
+      title: "Öğretmen Listesi",
+      path: "/teacher/list",
     },
     {
       icon: <BsFillPersonLinesFill size={25} />,
       title: "Personeller",
-      path: "/employee/add",
-    },
-    {
-      icon: <MdOutlineClass size={25} />,
-      title: "Sınıflar",
-      path: "/class/add",
+      path: "/employee/list",
     },
     {
       icon: <AiOutlineSchedule size={25} />,
       title: "Ders Programı",
       path: "/schedule/list",
     },
+    {
+      icon: <MdOutlineClass size={25} />,
+      title: "Sınıflar",
+      path: "/class/list",
+    },
+
     {
       icon: <IoSettingsOutline size={25} />,
       title: "Parametreler",
@@ -134,6 +136,21 @@ const SideBar = ({ titleName }: { titleName: string }) => {
           </MenuItem>
         ))}
       </SideBarMenu>
+      <MenuItem
+        active={false}
+        style={{
+          marginTop: "auto",
+          borderTop: "1px solid #e0e0e0",
+        }}
+        onClick={(e) => {
+          Cookies.remove("token");
+          Cookies.remove("refreshToken");
+          navigate("/login");
+        }}
+      >
+        <MdOutlineLogin size={25} />
+        Çıkış Yap
+      </MenuItem>
     </SideBarContainer>
   );
 };

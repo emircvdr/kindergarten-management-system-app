@@ -7,6 +7,14 @@ const preliminaryInterviewStudentSchema = new mongoose.Schema({
   gender: String,
   ageGroup: String,
   preinterviewDate: String,
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const PreliminaryInterviewStudent = mongoose.model(

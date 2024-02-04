@@ -69,12 +69,12 @@ const Dashboard = () => {
             <ButtonLink
               onClick={(e) => navigate("/preliminary-interview/list")}
             >
-              Ön Görüşme Kaydı
+              Ön Görüşme Listesi
             </ButtonLink>
-            <ButtonLink onClick={(e) => navigate("/preliminary-interview/add")}>
+            <ButtonLink onClick={(e) => navigate("/students/list")}>
               Kayıt Listeleri
             </ButtonLink>
-            <ButtonLink onClick={(e) => navigate("/preliminary-interview/add")}>
+            <ButtonLink onClick={(e) => navigate("/parameters")}>
               Diğer
             </ButtonLink>
           </div>

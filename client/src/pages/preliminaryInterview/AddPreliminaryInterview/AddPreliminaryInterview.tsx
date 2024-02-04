@@ -174,7 +174,7 @@ const AddPreliminaryInterview = () => {
                       onChange={(e: any) => {
                         setStudent({
                           ...student,
-                          birthDate: e.$d.toISOString(),
+                          birthDate: dayjs(e.$d).format("YYYY-MM-DD"),
                         });
                       }}
                       label="Doğum Tarihi"
@@ -243,7 +243,7 @@ const AddPreliminaryInterview = () => {
                       onChange={(e: any) => {
                         setStudent({
                           ...student,
-                          preinterviewDate: e.$d.toISOString(),
+                          preinterviewDate: dayjs(e.$d).format("YYYY-MM-DD"),
                         });
                       }}
                       label="Öngörülen Kayıt Tarihi"

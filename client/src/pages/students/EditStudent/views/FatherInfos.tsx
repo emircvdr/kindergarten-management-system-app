@@ -10,11 +10,12 @@ const ContainerArea = styled.div`
 `;
 
 const FatherInfos = (props: {
-  studentState: IStudents.ICreateStudent;
-  setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
+  studentState: IStudents.IStudentDetails;
+  setStudentState: React.Dispatch<
+    React.SetStateAction<IStudents.IStudentDetails>
+  >;
   setExpanded: React.Dispatch<SetStateAction<string | false>>;
 }) => {
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setStudentState({
       ...props.studentState,
@@ -23,8 +24,8 @@ const FatherInfos = (props: {
         father: {
           ...props.studentState.parent.father,
           [event.target.name]: event.target.value,
-        }
-      }
+        },
+      },
     });
   };
 
@@ -127,8 +128,8 @@ const FatherInfos = (props: {
                 father: {
                   ...props.studentState.parent.father,
                   isParent: !props.studentState.parent.father.isParent,
-                }
-              }
+                },
+              },
             })
           }
         />

@@ -12,6 +12,14 @@ const preliminaryInterviewParentSchema = new mongoose.Schema({
   fatherFullName: String,
   fatherPhoneNumber: String,
   fatherJob: String,
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const PreliminaryInterviewParent = mongoose.model(

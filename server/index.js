@@ -6,6 +6,9 @@ import dotenv from "dotenv";
 import studentRoutes from "./routes/student.js";
 import preliminaryInterviewRoutes from "./routes/preliminaryInterview.js";
 import auth from "./routes/auth.js";
+import teacher from "./routes/teacher.js";
+import classes from "./routes/classes.js";
+import employee from "./routes/employee.js";
 
 const app = express();
 dotenv.config();
@@ -24,6 +27,9 @@ app.get("/", (req, res) => {
 app.use("/student", studentRoutes);
 app.use("/preliminaryInterview", preliminaryInterviewRoutes);
 app.use("/auth", auth);
+app.use("/teacher", teacher);
+app.use("/classes", classes);
+app.use("/employee", employee);
 const PORT = process.env.PORT || 5000;
 
 mongoose

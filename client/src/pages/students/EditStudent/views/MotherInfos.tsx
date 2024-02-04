@@ -10,12 +10,13 @@ const ContainerArea = styled.div`
 `;
 
 const MotherInfos = (props: {
-  studentState: IStudents.ICreateStudent;
-  setStudentState: React.Dispatch<React.SetStateAction<IStudents.ICreateStudent>>;
+  studentState: IStudents.IStudentDetails;
+  setStudentState: React.Dispatch<
+    React.SetStateAction<IStudents.IStudentDetails>
+  >;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
   setExpanded: React.Dispatch<React.SetStateAction<string | false>>;
 }) => {
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setStudentState({
       ...props.studentState,
@@ -24,8 +25,8 @@ const MotherInfos = (props: {
         mother: {
           ...props.studentState.parent.mother,
           [event.target.name]: event.target.value,
-        }
-      }
+        },
+      },
     });
   };
 
@@ -130,21 +131,24 @@ const MotherInfos = (props: {
                 mother: {
                   ...props.studentState.parent.mother,
                   isParent: !props.studentState.parent.mother.isParent,
-                }
-              }
+                },
+              },
             });
           }}
         />
-        <div style={{
-          display: "flex",
-          gap: "10px"
-        }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+          }}
+        >
           <Button
             variant="contained"
             color="error"
             size="small"
             onClick={(e) => props.setTabValue(0)}
-            sx={{ height: "max-content" }}>
+            sx={{ height: "max-content" }}
+          >
             Geri
           </Button>
           <Button

@@ -1,12 +1,13 @@
 import React from "react";
 import Content from "../../../components/Content/Content";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import StyledDataGrid from "../../../components/StyledDataGrid/StyledDataGrid";
 import styled from "styled-components";
 import { GridColDef } from "@mui/x-data-grid";
 import { KindergartenAPI } from "../../../services/broker";
 import { IPreliminaryInterview } from "../../../interfaces/IPreliminaryInterview";
+import { IoFilterOutline } from "react-icons/io5";
 
 const DataGridContainer = styled.div`
   width: 100%;
@@ -50,7 +51,15 @@ const PreliminaryInterviewList = () => {
       minWidth: 90,
       width: 90,
       renderCell: (params: any) => {
-        return <Edit>Düzenle</Edit>;
+        return (
+          <Edit
+            onClick={() =>
+              navigate(`/preliminary-interview/edit/${params.value}`)
+            }
+          >
+            Düzenle
+          </Edit>
+        );
       },
     },
   ];
@@ -67,6 +76,8 @@ const PreliminaryInterviewList = () => {
     );
     setSelectedRow(search);
   };
+
+  const [isActive, setIsActive] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     KindergartenAPI.GetInterviews().then((res) => {
@@ -110,6 +121,20 @@ const PreliminaryInterviewList = () => {
                   onChange={handleSearch}
                 />
               </div>
+              <div>
+                <Tooltip
+                  title={
+                    isActive
+                      ? "Pasif Listesini Göster"
+                      : "Aktif Listesini Göster"
+                  }
+                >
+                  <Button
+                    startIcon={<IoFilterOutline />}
+                    onClick={() => setIsActive(!isActive)}
+                  />
+                </Tooltip>
+              </div>
               <div style={{ width: "20%" }}>
                 <Button
                   variant="contained"
@@ -124,7 +149,7 @@ const PreliminaryInterviewList = () => {
             </div>
             <DataGridContainer>
               <StyledDataGrid
-                rows={selectedRow}
+                rows={selectedRow.filter((item) => item.isActive === isActive)}
                 columns={columns}
                 initialState={{
                   pagination: {

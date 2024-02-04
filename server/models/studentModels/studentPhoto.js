@@ -6,6 +6,14 @@ const studentPhotoSchema = new mongoose.Schema({
     required: true,
   },
   photo: String,
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const StudentPhoto = mongoose.model("StudentPhoto", studentPhotoSchema);

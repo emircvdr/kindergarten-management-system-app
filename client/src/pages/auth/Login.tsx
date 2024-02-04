@@ -7,6 +7,7 @@ import Toast from "../../components/Toast/Toast";
 import Cookies from "js-cookie";
 import { decodeJwt } from "jose";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { FadeLoader } from "react-spinners";
 
 const Styles = AuthStyles.Register;
 const resetForm = {
@@ -26,7 +27,7 @@ const Login = () => {
       }
     }
   }, []);
-
+  const [loading, setLoading] = React.useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setForm({ ...form, [e.target.id]: e.target.value });
@@ -39,8 +40,17 @@ const Login = () => {
     event.preventDefault();
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (form.password.length < 6) {
+      Toast.fire({
+        icon: "error",
+        title: "Email veya şifre hatalı!",
+      });
+      return;
+    }
+
+    setLoading(true);
     KindergartenAPI.Login(form)
       .then((data) => {
         const token = decodeJwt(data?.token);
@@ -56,6 +66,7 @@ const Login = () => {
             icon: "error",
             title: "Bir Hata Oluştu!",
           });
+          setLoading(false);
           return;
         }
 
@@ -67,66 +78,76 @@ const Login = () => {
           title: err.response.data.error,
         });
         console.log(err);
+        setLoading(false);
       });
     setForm(resetForm);
   };
   return (
     <Styles.Container>
-      <Styles.Form onSubmit={handleSubmit}>
-        <Styles.Title>KREŞ YÖNETİM</Styles.Title>
-
-        <TextField
-          id="email"
-          value={form.email}
-          onChange={handleChange}
-          label="E-Posta"
-          variant="outlined"
-          margin="dense"
-          size="small"
-          fullWidth
-          type="email"
-          required
+      {loading ? (
+        <FadeLoader
+          color="#fff"
+          loading={loading}
+          aria-label="Yükleniyor..."
+          data-testid="loader"
         />
-        <TextField
-          id="password"
-          value={form.password}
-          onChange={handleChange}
-          label="Şifre"
-          variant="outlined"
-          margin="dense"
-          size="small"
-          fullWidth
-          type={showPassword ? "text" : "password"}
-          required
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+      ) : (
+        <Styles.Form onSubmit={handleSubmit}>
+          <Styles.Title>KREŞ YÖNETİM</Styles.Title>
 
-        <Button
-          variant="contained"
-          fullWidth
-          type="submit"
-          size="small"
-          sx={{ mt: 2 }}
-        >
-          Giriş Yap
-        </Button>
+          <TextField
+            id="email"
+            value={form.email}
+            onChange={handleChange}
+            label="E-Posta"
+            variant="outlined"
+            margin="dense"
+            size="small"
+            fullWidth
+            type="email"
+            required
+          />
+          <TextField
+            id="password"
+            value={form.password}
+            onChange={handleChange}
+            label="Şifre"
+            variant="outlined"
+            margin="dense"
+            size="small"
+            fullWidth
+            type={showPassword ? "text" : "password"}
+            required
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
-        <Styles.Link onClick={() => navigate("/register")}>
-          Hesabın yok mu? Kayıt Ol
-        </Styles.Link>
-      </Styles.Form>
+          <Button
+            variant="contained"
+            fullWidth
+            type="submit"
+            size="small"
+            sx={{ mt: 2 }}
+          >
+            Giriş Yap
+          </Button>
+
+          <Styles.Link onClick={() => navigate("/register")}>
+            Hesabın yok mu? Kayıt Ol
+          </Styles.Link>
+        </Styles.Form>
+      )}
     </Styles.Container>
   );
 };

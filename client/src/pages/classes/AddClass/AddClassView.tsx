@@ -7,14 +7,17 @@ import MenuItem from "@mui/material/MenuItem";
 import { Button, FormControl, InputLabel } from "@mui/material";
 import { IClass } from "../../../interfaces/IClass";
 import Toast from "../../../components/Toast/Toast";
+import { KindergartenAPI } from "../../../services/broker";
+import { ITeacher } from "../../../interfaces/ITeacher";
+import { useNavigate } from "react-router-dom";
 
 const StyledContainer = styled.div`
-display: flex;
-flex-direction: column;
-width: 100%;
-gap: 30px;
-margin-top: 20px;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 30px;
+  margin-top: 20px;
+  align-items: center;
 `;
 
 const StyledContainerLeft = styled.div`
@@ -22,7 +25,6 @@ const StyledContainerLeft = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 20px;
-
 `;
 
 const StyledContainerRight = styled.div`
@@ -30,13 +32,11 @@ const StyledContainerRight = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 20px;
-
 `;
 
-
 const AddClassView = () => {
-
-  const [formData, setFormData] = useState <IClass.IClass>({
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<IClass.ICreateClass>({
     className: "",
     ageGroup: "",
     classCapacity: "",
@@ -52,118 +52,137 @@ const AddClassView = () => {
 
   const handleAgeChange = (event: SelectChangeEvent<string>) => {
     setFormData({
-   ...formData,
+      ...formData,
       ageGroup: event.target.value,
     });
   };
 
   const handleTeacherChange = (event: SelectChangeEvent<string>) => {
     setFormData({
-   ...formData,
+      ...formData,
       relatedTeacher: event.target.value,
-    }); 
+    });
   };
 
   const handleSubmit = () => {
-    console.log("Form submitted!", formData)
-    Toast.fire({
-      icon: "success",
-      title: "Başarılı!",
-    })
+    KindergartenAPI.CreateClass(formData)
+      .then((res) => {
+        Toast.fire({
+          icon: "success",
+          title: "Sınıf Başarıyla Eklendi",
+        });
+      })
+      .catch((err) => {
+        Toast.fire({
+          icon: "error",
+          title: "Sınıf Eklenirken Bir Hata Oluştu",
+        });
+      });
+    navigate("/class/list");
   };
+  const [teachers, setTeachers] = React.useState<ITeacher.ITeacher[]>([]);
+  React.useEffect(() => {
+    KindergartenAPI.GetTeachers().then((res) => {
+      setTeachers(res);
+    });
+  }, []);
 
   return (
     <Content
-            titleName="Sınıflar"
-            header="Sınıf Tanımlama"
-            content={
-              <StyledContainer>
-                <div style={{
-                  display: "flex",
-                  width: "80%",
-                  justifyContent: "center",
-                  gap: 20,
-                }}>
-                <StyledContainerLeft>
-                  <TextField
-                  name="className"
-                  value={formData.className}
+      titleName="Sınıflar"
+      header="Sınıf Tanımlama"
+      content={
+        <StyledContainer>
+          <div
+            style={{
+              display: "flex",
+              width: "80%",
+              justifyContent: "center",
+              gap: 20,
+            }}
+          >
+            <StyledContainerLeft>
+              <TextField
+                name="className"
+                value={formData.className}
+                size="small"
+                label="Sınıf Adı"
+                onChange={handleChange}
+                required
+              />
+              <FormControl fullWidth size="small">
+                <InputLabel>Yaş Grubu</InputLabel>
+                <Select
+                  name="ageGroup"
+                  value={formData.ageGroup}
+                  label="Yaş Grubu"
+                  onChange={handleAgeChange}
                   size="small"
-                  label="Sınıf Adı"
-                  onChange={handleChange}
                   required
-                  />
-                  <FormControl fullWidth size="small">
-                    <InputLabel>Yaş Grubu</InputLabel>
-                    <Select
-                        name="ageGroup"
-                        value={formData.ageGroup}
-                        label="Yaş Grubu"
-                        onChange={handleAgeChange}
-                        size="small"
-                        required
-                    >
-                      <MenuItem value="3 Yaş">3 Yaş</MenuItem>
-                      <MenuItem value="4 Yaş">4 Yaş</MenuItem>
-                      <MenuItem value="5 Yaş">5 Yaş</MenuItem>
-                      <MenuItem value="6 Yaş">6 Yaş</MenuItem>
-                    </Select>
-                  </FormControl>
+                >
+                  <MenuItem value="3 Yaş">3 Yaş</MenuItem>
+                  <MenuItem value="4 Yaş">4 Yaş</MenuItem>
+                  <MenuItem value="5 Yaş">5 Yaş</MenuItem>
+                  <MenuItem value="6 Yaş">6 Yaş</MenuItem>
+                </Select>
+              </FormControl>
+            </StyledContainerLeft>
 
-                </StyledContainerLeft>
-
-                <StyledContainerRight>
-                <TextField
-                  name="classCapacity"
-                  value={formData.classCapacity}
+            <StyledContainerRight>
+              <TextField
+                name="classCapacity"
+                value={formData.classCapacity}
+                size="small"
+                label="Sınıf Kapasitesi"
+                onChange={handleChange}
+                required
+              />
+              <FormControl fullWidth size="small">
+                <InputLabel>Öğretmen</InputLabel>
+                <Select
+                  name="relatedTeacher"
+                  value={formData.relatedTeacher}
+                  label="Öğretmen"
+                  onChange={handleTeacherChange}
                   size="small"
-                  label="Sınıf Kapasitesi"
-                  onChange={handleChange}
                   required
-                />
-                <FormControl fullWidth size="small">
-                  <InputLabel>Öğretmen</InputLabel>
-                  <Select
-                      name="relatedTeacher"
-                      value={formData.relatedTeacher}
-                      label="Öğretmen"
-                      onChange={handleTeacherChange}
-                      size="small"
-                      required
-                  >
-                    <MenuItem value="Öğretmen Ad-Soyad1">Öğretmen Ad-Soyad1</MenuItem>
-                    <MenuItem value="Öğretmen Ad-Soyad2">Öğretmen Ad-Soyad2</MenuItem>
-                    <MenuItem value="Öğretmen Ad-Soyad3">Öğretmen Ad-Soyad3</MenuItem>
-                  </Select>
-                </FormControl>
+                >
+                  {teachers.map((teacher) => {
+                    return (
+                      <MenuItem key={teacher._id} value={teacher.fullName}>
+                        {teacher.fullName}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </StyledContainerRight>
+          </div>
 
-                </StyledContainerRight>
-                </div>
-              
-                <div
-                style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: "20px",
-                gap: "20px",
-                width: "80%"
-              }}
-              >
-              <Button variant="contained" fullWidth size="small" onClick={handleSubmit}>KAYDET</Button>
-              </div>
-              </StyledContainer>
-              
-            }
-
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "20px",
+              gap: "20px",
+              width: "80%",
+            }}
+          >
+            <Button
+              variant="contained"
+              fullWidth
+              size="small"
+              onClick={handleSubmit}
+            >
+              KAYDET
+            </Button>
+          </div>
+        </StyledContainer>
+      }
     />
-  )
+  );
+};
 
-  };
-
-
-
-
-
-export default AddClassView
+export default AddClassView;
